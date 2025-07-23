@@ -8,3 +8,6 @@ Route::get('/test-user', function () {
     return $products;  // จะได้เป็น array ว่าง [] ถ้ายังไม่มีข้อมูล
 });
 
+Route::get('/', function () {
+    return view('home');
+});
