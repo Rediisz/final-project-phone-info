@@ -31,7 +31,7 @@ Admins can manage phone brands, models, and news through a dedicated back office
 
 ## 🖼 Example 
 *(Preview of work in progress)*
-
+ - Back Office
 ![Admin Page](public/example/Homepage(Back%20office).jpg)
 ![BackOffice Login](public/example/Login(Back_office).jpg)
 
