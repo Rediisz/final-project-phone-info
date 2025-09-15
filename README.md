@@ -7,7 +7,7 @@ Admins can manage phone brands, models, and news through a dedicated back office
 ---
 
 ## 🚀 Tech Stack
-- **Backend:** Laravel 10 (MVC)
+- **Backend:** Laravel 10 
 - **Frontend:** Blade templates, CSS, JavaScript
 - **Database:** MySQL
 - **Tools:** Composer, phpMyAdmin, Trello, GitHub
@@ -15,11 +15,17 @@ Admins can manage phone brands, models, and news through a dedicated back office
 ---
 
 ## ✨ Features
-- ✅ Admin login & dashboard  
-- ✅ Brand & Phone model management (CRUD)  
-- ✅ News management (CRUD)  
-- ⏳ User comment system *(in progress)*  
-- ⏳ REST API *(planned)*  
+- ✅ **Complete CRUD Operations**  
+  (Brand, Phone Models, News Management, Admin Authentication, Back Office Dashboard)
+
+- ⏳ **Features in Progress**
+  - User Comment System  
+  - REST API for Frontend Integration  
+  - Responsive & Mobile-Friendly UI  
+  - Search and Filter for Phone Models  
+  - User Authentication (Register/Login for public users)  
+  - Unit & Feature Tests (Laravel Pest/PhpUnit)  
+ 
 
 ---
 
