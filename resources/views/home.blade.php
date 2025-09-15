@@ -1,105 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <title>TUTA Phone</title>
-    <link rel="stylesheet" href="../css/main.css">
+  <meta charset="UTF-8">
+  <title>SmartSpec</title>
+  <link rel="stylesheet" href="{{ asset('style/style.css') }}">
+  <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
 </head>
 <body>
-    <div class="header">
-        <div class="logo">TU<span>TA</span> Phone</div>
-        <div class="menu">
-            <a href="#" class="active">หน้าแรก</a>
-            <a href="#">ข่าว</a>
-            <a href="#">เปรียบเทียบ</a>
-        </div>
-        <div class="auth-buttons">
-            <button>🔄 Login</button>
-            <button>🔗 Sign Up</button>
-        </div>
-    </div>
+  <header>
+    <h1>SmartSpec</h1>
+    <nav>
+      <a href="#">หน้าแรก</a>
+      <a href="#">ข่าว</a>
+      <a href="#">เปรียบเทียบ</a>
+      <a href="{{ url('/login') }}">Login</a>
+      <a href="{{ url('/signup') }}">Sign Up</a>
+    </nav>
+  </header>
 
-    <div class="slider">
-        <img src="https://via.placeholder.com/300x220?text=Slide1" alt="">
-        <img src="https://via.placeholder.com/300x220?text=Slide2" alt="">
-        <img src="https://via.placeholder.com/300x220?text=Slide3" alt="">
-    </div>
+  {{-- 🔄 Banner ข่าวล่าสุด --}}
+  <div class="banner-carousel">
+    @foreach($news as $n)
+      @php $banner = $n->Banner_Img; @endphp
+      <div class="banner-slide">
+        <img src="{{ Str::startsWith($banner, ['http://','https://']) ? $banner : asset($banner) }}" alt="News Banner">
+      </div>
+    @endforeach
+  </div>
 
-    <div class="search-section">
-        <input type="text" placeholder="🔍 ค้นหามือถือ">
-        <button>ค้นหา</button>
-    </div>
+  {{-- 🔍 ค้นหา --}}
+  <div class="search-box">
+    <form method="GET" action="{{ url('/search') }}">
+      <input type="text" name="q" placeholder="ค้นหามือถือ...">
+      <button type="submit">ค้นหา</button>
+    </form>
+  </div>
 
-    <div class="main">
-        <div class="sidebar">
-            <h4>ยี่ห้อ</h4>
-            <ul>
-                <li>SAMSUNG</li>
-                <li>APPLE</li>
-                <li>HUAWEI</li>
-                <li>NOKIA</li>
-                <li>LENOVO</li>
-                <li>OPPO</li>
-                <li>XIAOMI</li>
-                <li>ASUS</li>
-                <li>REALME</li>
-                <li>ONEPLUS</li>
-                <li>VIVO</li>
-                <li>HONOR</li>
-                <li>MOTOROLA</li>
-                <li>GOOGLE</li>
-            </ul>
-        </div>
+  {{-- 🧭 แบรนด์ --}}
+  <div class="brands-filter">
+    @foreach($brands as $b)
+      <a href="{{ url('/brand?id='.$b->ID) }}">{{ $b->Brand }}</a>
+    @endforeach
+  </div>
 
-        <div class="content">
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=Galaxy+S25" alt="">
-                <p>Galaxy S25</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=iPhone+16" alt="">
-                <p>iPhone 16</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=Mate+60" alt="">
-                <p>Mate 60</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=Galaxy+S25" alt="">
-                <p>Galaxy S52 Plus Ultra</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=iPhone+16" alt="">
-                <p>iPhone 60 Super Promax</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=Mate+60" alt="">
-                <p>Mate 60+20</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=Galaxy+S25" alt="">
-                <p>Galaxy S25</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=iPhone+16" alt="">
-                <p>iPhone 16</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=Mate+60" alt="">
-                <p>Mate 60</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=Galaxy+S25" alt="">
-                <p>Galaxy S52 Plus Ultra</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=iPhone+16" alt="">
-                <p>iPhone 60 Super Promax</p>
-            </div>
-            <div class="product-item">
-                <img src="https://via.placeholder.com/120x180?text=Mate+60" alt="">
-                <p>Mate 60+20</p>
-            </div>
-    </div>
+  {{-- 📱 มือถือ --}}
+  <div class="mobile-grid">
+    @foreach($mobiles as $m)
+      @php
+        $imgPath = $m->firstImage?->Img ?? 'images/default.jpg'; // เตรียม public/images/default.jpg
+        $imgUrl  = Str::startsWith($imgPath, ['http://','https://']) ? $imgPath : asset($imgPath);
+      @endphp
+      <div class="mobile-card">
+        <img src="{{ $imgUrl }}" alt="{{ $m->Model }}">
+        <h3>{{ $m->Model }}</h3>
+      </div>
+    @endforeach
+  </div>
 </body>
 </html>
