@@ -22,7 +22,7 @@
             <th style="padding:10px; border:1px solid #e8eef5; width:90px">ลำดับ</th>
             <th style="padding:10px; border:1px solid #e8eef5">รุ่น / ชื่อ</th>
             <th style="padding:10px; border:1px solid #e8eef5; width:180px">รูปภาพ</th>
-            <th style="padding:10px; border:1px solid #e8eef5; width:120px">สถานะ</th>
+            {{-- <th style="padding:10px; border:1px solid #e8eef5; width:120px">สถานะ</th> --}}
             <th style="padding:10px; border:1px solid #e8eef5; width:120px">แก้ไข</th>
           </tr>
         </thead>
@@ -36,13 +36,14 @@
               <td style="padding:10px; border:1px solid #e8eef5">
                 <img src="{{ $row['image'] }}" alt="" style="width:150px; height:90px; object-fit:cover; border-radius:8px">
               </td>
+              {{-- Open & Close Status 
               <td style="padding:10px; border:1px solid #e8eef5; text-align:center">
                 @if($row['active'])
                     <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#16a34a"></span>
                 @else
                     <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#ef4444"></span>
-                @endif
-              </td>
+                @endif 
+              </td> --}}
 
               <td style="padding:10px; border:1px solid #e8eef5; text-align:center">
                 <a href="#" title="แก้ไข">✏️</a>
