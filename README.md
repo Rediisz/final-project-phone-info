@@ -34,7 +34,7 @@ Admins can manage phone brands, models, and news through a dedicated back office
  - Back Office
 ![Admin Page](public/example/Homepage(Back%20office).jpg)
 ![BackOffice Login](public/example/Login(Back_office).jpg)
-![BackOffice Banner](public/example/Login(Back_office).jpg)
+![BackOffice Banner](public/example/Banner(Back_office).jpg)
 ![BackOffice Phone](public/example/Phone(BO).jpg)
 ![BackOffice News](public/example/News(BO).jpg)
 ![BackOffice Member](public/example/Member(BO).jpg)
