@@ -39,7 +39,8 @@ Admins can manage phone brands, models, and news through a dedicated back office
 ![BackOffice News](public/example/News(BO).jpg)
 ![BackOffice Member](public/example/Member(BO).jpg)
 
----
+ - Main
+![Main](public/example/Main/Main.jpg)
 
 ## 📌 Status
 🚧 **Work in Progress** – This project is currently under development and not yet available for public testing.  
