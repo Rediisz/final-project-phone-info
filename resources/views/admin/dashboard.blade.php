@@ -6,6 +6,19 @@
 {{-- ถ้าหน้านี้มีสไตล์เฉพาะ เพิ่มผ่าน stack "head" ได้ --}}
 @push('head')
 <style>
+  /* เฉพาะรายการมือถือ: ทำให้เห็นทั้งเครื่อง */
+  #phones .item { align-items: center; } /* จัดกลางแนวตั้ง */
+  #phones .thumb{
+    width:110px;              /* กว้างขึ้นนิด */
+    height:130px;             /* สูงพอสำหรับสัดส่วนมือถือ */
+    flex:0 0 110px;
+    object-fit:contain;       /* เห็นทั้งรูป ไม่ครอป */
+    background:#fff;          /* พื้นหลังขาว */
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:6px;              /* มีขอบขาวรอบ ๆ รูป */
+    box-sizing:border-box;
+  }
   .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
   .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
   .kpi{font-size:12px;color:#6b7280}
@@ -55,14 +68,34 @@
 
   {{-- แบนเนอร์ --}}
   <section id="banners" class="panel">
-    <h3>แบนเนอร์ (ทั้งหมด)</h3>
+    <h3>แบนเนอร์ (ทั้งหมด {{ $bannersCount ?? 0 }})</h3>
+
     <div class="list">
       @forelse(($recentBanners ?? []) as $b)
         <div class="item">
-          <img class="thumb" src="{{ $b->image_url ?? asset('images/placeholder.png') }}" alt="">
-          <div>
-            <div style="font-weight:600">{{ $b->title ?? 'Untitled' }}</div>
-            <div class="muted">{{ $b->description ?? '' }}</div>
+          <img class="thumb"
+              src="{{ $b->image_url ?? $b->bannerImg ?? asset('images/placeholder.png') }}"
+              alt="banner">
+
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="font-weight:600">
+              {{ $b->title ?? $b->bannerName ?? 'Untitled' }}
+            </div>
+
+            <div>
+              @php $active = (bool) ($b->is_active ?? false); @endphp
+              <span style="
+                display:inline-flex;align-items:center;gap:6px;
+                font-size:12px;padding:4px 8px;border-radius:999px;
+                background: {{ $active ? '#e8f7ee' : '#fdeaea' }};
+                color: {{ $active ? '#16a34a' : '#dc2626' }};
+                border: 1px solid {{ $active ? '#b9ebc9' : '#f5c2c2' }};
+              ">
+                <span style="width:8px;height:8px;border-radius:50%;
+                  background: {{ $active ? '#16a34a' : '#dc2626' }};"></span>
+                {{ $active ? 'ใช้งาน' : 'ปิดใช้งาน' }}
+              </span>
+            </div>
           </div>
         </div>
       @empty
@@ -71,43 +104,66 @@
     </div>
   </section>
 
+
   {{-- มือถือ --}}
   <section id="phones" class="panel">
     <h3>ข้อมูลมือถือ (ล่าสุด)</h3>
+
     <div class="list">
       @forelse(($recentPhones ?? []) as $p)
-        <a class="item" href="#">
-          <img class="thumb" src="{{ $p->image_url ?? asset('images/placeholder.png') }}" alt="">
+        @php
+          $imgPath = $p->coverImage?->Img ?? $p->images->first()?->Img ?? null;
+          $imgUrl  = $imgPath ? asset('storage/'.$imgPath) : asset('images/placeholder.png');
+          $brand   = $p->brand->Brand ?? '-';
+        @endphp
+
+        <div class="item"  style="text-decoration:none;color:inherit">
+          <img class="thumb" src="{{ $imgUrl }}" alt="{{ $p->Model }}">
           <div>
-            <div style="font-weight:600">{{ $p->model ?? 'Unknown' }}</div>
-            <div class="muted">{{ $p->brand ?? '-' }}</div>
+            <div style="font-weight:600">{{ $p->Model }}</div>
+            <div class="muted">{{ $brand }}</div>
           </div>
-        </a>
+        </div>
       @empty
         <div class="muted">ยังไม่มีข้อมูลมือถือ</div>
       @endforelse
     </div>
   </section>
 
+
   {{-- ข่าว --}}
   <section id="news" class="panel">
-    <h3>ข้อมูลข่าว (ล่าสุด)</h3>
+    <h3 style="margin:0 0 10px; display:flex; align-items:center; gap:8px">
+      📰 ข้อมูลข่าว (ล่าสุด)
+    </h3>
+
     <div class="list">
-      @forelse(($recentNews ?? []) as $n)
-        <a class="item" href="#">
-          <img class="thumb" src="{{ $n->image_url ?? asset('images/placeholder.png') }}" alt="">
+      @forelse($recentNews as $n)
+        <div class="item" href="#" style="display:flex;gap:12px;align-items:center;padding:10px 0">
+          <img class="thumb"
+              src="{{ $n->coverUrl() }}"
+              alt=""
+              style="width:90px;height:90px;object-fit:contain;border:1px solid #e5e7eb;border-radius:12px">
           <div>
-            <div style="font-weight:600">{{ $n->title ?? 'Untitled' }}</div>
-            <div class="muted">{{ \Illuminate\Support\Str::limit($n->summary ?? '', 60) }}</div>
+            <div style="font-weight:700">{{ $n->Title }}</div>
+            <div class="muted" style="font-size:12px;color:#6b7280">
+              {{ \Illuminate\Support\Str::limit(strip_tags($n->Details), 60) }}
+            </div>
+            @if($n->Date)
+              <div class="muted" style="font-size:12px;color:#9ca3af">
+                {{ $n->Date->format('d M Y H:i') }}
+              </div>
+            @endif
           </div>
-        </a>
+        </div>
       @empty
-        <div class="muted">ยังไม่มีข่าว</div>
+        <div class="muted" style="color:#6b7280">ยังไม่มีข่าว</div>
       @endforelse
     </div>
   </section>
 
-  {{-- สมาชิก --}}
+
+{{-- สมาชิก 
   <section id="members" class="panel">
     <h3>ข้อมูลสมาชิก (ล่าสุด)</h3>
     <div class="list">
@@ -121,7 +177,7 @@
         </div>
       @empty
         <div class="muted">ยังไม่มีสมาชิกใหม่</div>
-      @endforelse
+      @endforelse --}}
     </div>
   </section>
 @endsection

@@ -9,5 +9,14 @@ class MobileImg extends Model
     protected $primaryKey = 'ID';
     public $timestamps = false;
 
-    public function mobile() { return $this->belongsTo(MobileInfo::class, 'Mobile_ID', 'ID'); }
+    protected $fillable = [
+        'Mobile_ID',
+        'Img',
+        'IsCover',
+    ];
+
+    public function mobile()
+    {
+        return $this->belongsTo(MobileInfo::class, 'Mobile_ID', 'ID');
+    }
 }

@@ -149,28 +149,60 @@
     </aside>
 
     <main class="content">
-      <div class="search-box">
-        <form method="GET" action="{{ url('/search') }}">
-          <input type="text" name="q" placeholder="ค้นหามือถือ...">
-          <button type="submit">ค้นหา</button>
-        </form>
-      </div>
+        {{-- กล่องค้นหา (จะเปลี่ยน action เป็น /news หรือคงเดิมก็ได้) --}}
+        <div class="search-box">
+            <form method="GET" action="{{ url('/news') }}">
+            <input type="text" name="q" placeholder="ค้นหาข่าว...">
+            <button type="submit">ค้นหา</button>
+            </form>
+        </div>
 
-      <div class="mobile-grid">
-        @forelse($mobiles as $m)
-          @php
-            $imgPath = $m->coverImage?->Img ?? $m->images->first()?->Img ?? null;
-            $imgUrl  = $imgPath ? asset('storage/'.$imgPath) : asset('images/default.jpg');
-          @endphp
-          <div class="mobile-card">
-            <img src="{{ $imgUrl }}" alt="{{ $m->Model }}">
-            <h3>{{ $m->Model }}</h3>
-          </div>
-        @empty
-          @for($i=0;$i<16;$i++)<div class="mobile-card placeholder"></div>@endfor
-        @endforelse
-      </div>
-    </main>
+        <style>
+            /* สไตล์ลิสต์ข่าว */
+            .news-list{display:flex;flex-direction:column;gap:18px}
+            .news-item{display:grid;grid-template-columns:160px 1fr;gap:14px;
+            background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,35,66,.08);padding:12px}
+            .news-thumb{width:160px;height:120px;border-radius:10px;overflow:hidden;background:#e9eef5}
+            .news-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+            .news-title{margin:0 0 6px;font-size:18px;line-height:1.35}
+            .news-title a{color:#0f2342;text-decoration:none}
+            .news-title a:hover{text-decoration:underline}
+            .news-intro{color:#465975;margin:0 0 8px}
+            .news-meta{font-size:12px;color:#6b7280;display:flex;gap:12px;align-items:center}
+            @media (max-width:680px){.news-item{grid-template-columns:1fr}.news-thumb{height:180px;width:100%}}
+        </style>
+
+        <div class="news-list">
+            @foreach($items as $n)
+            @php
+                $imgPath = $n->cover?->Img ?? $n->images->first()?->Img ?? null;
+                $imgUrl  = $imgPath ? asset('storage/'.$imgPath) : asset('images/default.jpg');
+                $intro   = \Illuminate\Support\Str::limit(strip_tags($n->Intro ?: $n->Details), 140);
+            @endphp
+
+            <article class="news-item">
+                <a class="news-thumb" href="{{ route('news.show', $n->ID) }}">
+                <img src="{{ $imgUrl }}" alt="{{ $n->Title }}">
+                </a>
+                <div>
+                <h2 class="news-title">
+                    <a href="{{ route('news.show', $n->ID) }}">{{ $n->Title }}</a>
+                </h2>
+                <p class="news-intro">{{ $intro }}</p>
+                <div class="news-meta">
+                    <span>{{ optional($n->Date)->format('d M Y H:i') }}</span>
+                    @if($n->brand) <span>• {{ $n->brand->Brand }}</span> @endif
+                    @if($n->mobile) <span>• {{ $n->mobile->Model }}</span> @endif
+                </div>
+                </div>
+            </article>
+            @endforeach
+        </div>
+
+        <div style="margin-top:16px">
+            {{ $items->onEachSide(1)->links() }}
+        </div>
+        </main>
   </div>
 
   <script>

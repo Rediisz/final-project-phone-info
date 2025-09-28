@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -18,5 +19,18 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return $this->Password;
+    }
+
+    protected $appends = ['avatar_url'];
+
+    public function getAvatarUrlAttribute(): string
+    {
+        if (empty($this->Picture)) {
+            return asset('images/placeholder-user.png');
+        }
+        $path = str_replace('\\','/',$this->Picture);
+        return Str::startsWith($path, ['http://','https://','//'])
+            ? $path
+            : asset('storage/'.$path); // storage/app/public/...
     }
 }

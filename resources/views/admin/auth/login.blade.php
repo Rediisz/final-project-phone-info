@@ -128,6 +128,11 @@
         </div>
 
         <button class="btn" type="submit">เข้าสู่ระบบ</button>
+        <a href="{{ route('admin.login.google') }}"
+          style="display:flex;align-items:center;justify-content:center;padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;font-weight:600">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" style="width:18px;height:18px;margin-right:8px">
+          Sign in with Google
+        </a>
       </form>
     </div>
 
