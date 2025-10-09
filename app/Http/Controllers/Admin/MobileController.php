@@ -159,4 +159,9 @@ class MobileController extends Controller
         return redirect()->route('admin.phones.index')->with('success','ลบข้อมูลแล้ว');
     }
     
+    public function show(MobileInfo $mobile)
+    {
+        $mobile->load(['brand','images','coverImage']); // มีอะไรก็ใส่ความสัมพันธ์ไว้
+        return view('mobile.show', compact('mobile'));
+    }
 }

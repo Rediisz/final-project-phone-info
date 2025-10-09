@@ -41,10 +41,10 @@
             </td>
 
             <td style="padding:12px;border:1px solid var(--line)">
-              <a href="{{ route('admin.news.edit', $item->ID) }}"
+              <div href="{{ route('admin.news.edit', $item->ID) }}"
                  style="color:var(--primary);font-weight:600">
                 {{ $item->Title }}
-              </a>
+              </div>
               <div style="color:#6b7280;font-size:12px">
                 {{ $item->brand->Brand ?? '-' }} @if($item->mobile) • {{ $item->mobile->Model }} @endif
               </div>
@@ -54,9 +54,9 @@
               @php $img = $item->coverUrl(); @endphp
               @if($img)
                 <img src="{{ $img }}" alt="{{ $item->Title }}"
-                     style="width:150px;height:90px;object-fit:cover;border-radius:8px;display:inline-block">
+                     style="width:150px;height:150px;object-fit:cover;border-radius:8px;display:inline-block">
               @else
-                <div style="width:150px;height:90px;border:1px dashed var(--line);border-radius:8px;
+                <div style="width:150px;height:150px;border:1px dashed var(--line);border-radius:8px;
                             display:inline-flex;align-items:center;justify-content:center;color:#9ca3af;font-size:12px">
                   ไม่มีรูป
                 </div>

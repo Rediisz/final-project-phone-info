@@ -66,6 +66,10 @@
       touch-action:manipulation;
     }
     .btn:hover{background:var(--primary-50)}
+    .google-btn:hover {
+      background: #f3f4f6; 
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); 
+    }
 
     .error{
       margin-bottom:10px; background:#fff5f5; color:#b00020;
@@ -128,8 +132,8 @@
         </div>
 
         <button class="btn" type="submit">เข้าสู่ระบบ</button>
-        <a href="{{ route('admin.login.google') }}"
-          style="display:flex;align-items:center;justify-content:center;padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;font-weight:600">
+        <a href="{{ route('admin.login.google') }}" class="google-btn"
+          style="display:flex;align-items:center;justify-content:center;padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;font-weight:600  ;text-decoration: none; color: #0F2342">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" style="width:18px;height:18px;margin-right:8px">
           Sign in with Google
         </a>

@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        //เพิ่ม guard admin ไม่ให้ชนกันกับ login singup user
+        'admin' => [
+        'driver' => 'session',
+        'provider' => 'users', // ใช้ตาราง user เดียวกัน
+    ],
     ],
 
     /*

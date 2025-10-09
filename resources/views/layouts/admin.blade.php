@@ -61,9 +61,10 @@
       <img src="{{ asset('images/logo.png') }}" alt="logo"> BACK OFFICE
     </div>
 
+    @php($admin = Auth::guard('admin')->user())
     <div class="userbox">
-      สวัสดี, <strong>{{ auth()->user()->User_Name }}</strong><br>
-      <span style="color:#9aa0a6">Administrator</span>
+      สวัสดี, <strong>{{ $admin?->User_Name }}</strong><br>
+      <span style="color:#9aa0a6">{{ $admin?->role?->Role ?? 'Administrator' }}</span>
     </div>
 
     <nav class="menu">

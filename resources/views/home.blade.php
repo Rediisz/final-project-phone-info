@@ -6,79 +6,29 @@
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
 
   <style>
-  /* ===== โทนหลัก ===== */
   body{background:#f3f6fb;font-family:sans-serif;margin:0;color:#0f2342}
-
   header{background:#0f2342;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 24px}
   header h1{margin:0;font-size:1.6rem}
   header nav a{color:#fff;margin-left:14px;text-decoration:none}
   header nav a:hover{text-decoration:underline}
 
-  /* ===== แบนเนอร์ (center-mode + infinite แบบไม่ย้อนกลับ) ===== */
   .banner-wrap{background:#2f3236;position:relative;padding:22px 64px 30px}
   .banner-empty{background:#2f3236;min-height:260px}
-
-  .carousel{
-    max-width:min(1280px,100%);
-    margin:0 auto;
-    overflow:hidden;                 /* ซ่อนแค่กรอบนอก */
-    position:relative;
-  }
-
-  /* เพิ่มเงาจาง ๆ ขอบซ้าย/ขวาให้ดูเนียน */
-  .carousel::before,
-  .carousel::after{
-    content:"";position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none
-  }
+  .carousel{max-width:min(1280px,100%);margin:0 auto;overflow:hidden;position:relative}
+  .carousel::before,.carousel::after{content:"";position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
   .carousel::before{left:0;background:linear-gradient(90deg,rgba(47,50,54,1),rgba(47,50,54,0))}
   .carousel::after {right:0;background:linear-gradient(-90deg,rgba(47,50,54,1),rgba(47,50,54,0))}
-
-  .track{
-    display:flex;align-items:center;
-    gap:48px;                        /* ← ระยะห่างสไลด์ (ต้องตรงกับ JS) */
-    will-change:transform;
-    transition:transform .5s ease;   /* นุ่มขึ้นกว่าก่อนหน้า */
-    padding:10px 4px;
-  }
-
-  .slide{
-    flex:0 0 auto;
-    width:clamp(260px, 26vw, 420px); /* ขนาดให้เห็นประมาณ 3 ใบ + เผื่อซ้ายขวา */
-    aspect-ratio:16/9;
-    border-radius:18px;
-    background:#1f2124;
-    overflow:hidden;
-    box-shadow:0 14px 32px rgba(0,0,0,.35);
-    transform:scale(.88);            /* ซ้าย/ขวาเล็กลง */
-    opacity:.7;
-    transition:transform .35s ease, opacity .35s ease;
-    cursor:pointer;
-  }
+  .track{display:flex;align-items:center;gap:48px;will-change:transform;transition:transform .5s ease;padding:10px 4px}
+  .slide{flex:0 0 auto;width:clamp(260px, 26vw, 420px);aspect-ratio:16/9;border-radius:18px;background:#1f2124;overflow:hidden;box-shadow:0 14px 32px rgba(0,0,0,.35);transform:scale(.88);opacity:.7;transition:transform .35s ease, opacity .35s ease;cursor:pointer}
   .slide.is-active{transform:scale(1);opacity:1}
-
-  .slide img{
-    width:100%;height:100%;
-    object-fit:cover;                /* ฟีลโปสเตอร์แบบตัวอย่าง */
-    background:#1f2124;
-  }
-
-  .nav{
-    position:absolute;top:50%;transform:translateY(-50%);
-    width:40px;height:40px;border-radius:999px;border:none;
-    background:#fff;color:#0f2342;font-size:22px;font-weight:700;
-    display:grid;place-items:center;cursor:pointer;z-index:3;
-    box-shadow:0 6px 16px rgba(0,0,0,.3)
-  }
+  .slide img{width:100%;height:100%;object-fit:cover;background:#1f2124}
+  .nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:999px;border:none;background:#fff;color:#0f2342;font-size:22px;font-weight:700;display:grid;place-items:center;cursor:pointer;z-index:3;box-shadow:0 6px 16px rgba(0,0,0,.3)}
   .nav.prev{left:16px} .nav.next{right:16px}
   .nav:hover{filter:brightness(.95)}
-
   .dots{display:flex;gap:10px;justify-content:center;margin-top:14px}
-  .dot{
-    width:8px;height:8px;border-radius:999px;border:none;cursor:pointer;background:#9da3af;opacity:.75
-  }
+  .dot{width:8px;height:8px;border-radius:999px;border:none;cursor:pointer;background:#9da3af;opacity:.75}
   .dot.is-active{width:24px;background:#fff;opacity:1}
 
-  /* ===== เนื้อหาหลังแบนเนอร์ ===== */
   .layout{display:grid;grid-template-columns:220px 1fr;gap:16px;padding:16px}
   .sidebar h3{margin-top:0}
   .brand-list{list-style:none;margin:0;padding:0}
@@ -87,35 +37,78 @@
   .brand-list a:hover{text-decoration:underline}
 
   .search-box{background:#fff;padding:12px;border-radius:12px;box-shadow:0 4px 12px rgba(15,35,66,.08);margin-bottom:16px}
+  .search-box form{display:flex; gap:8px; align-items:center}
+  .search-box input{flex:1;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box}
+  .search-box button{padding:10px 14px;border:0;border-radius:8px;background:#0f2342;color:#fff;font-weight:600;cursor:pointer}
+  .search-box button:hover{filter:brightness(.95)}
+
   .mobile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;padding:20px 0}
   .mobile-card{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,35,66,.08);text-align:center;padding:10px;min-height:200px;transition:transform .15s}
   .mobile-card:hover{transform:translateY(-2px)}
   .mobile-card img{max-width:100%;height:160px;object-fit:contain;margin-bottom:8px}
   .mobile-card h3{font-size:14px;margin:0}
-  .mobile-card.placeholder{background:#e6e9ef}
+  .mobile-card-link{display:block;text-decoration:none;color:inherit;border-radius:12px}
+  .mobile-card-link:focus-visible{outline:3px solid #0f2342;outline-offset:2px}
+
+  /* empty-state (ใหม่) */
+  .empty-state{
+    grid-column:1 / -1;background:#fff;border-radius:12px;
+    box-shadow:0 4px 12px rgba(15,35,66,.08);
+    padding:24px;text-align:center;color:#374151
+  }
+  .empty-state h3{margin:0 0 6px;font-size:18px;color:#0f2342}
+  .empty-state .btn-ghost{
+    display:inline-block;margin-top:10px;padding:10px 14px;
+    border:1px solid #d1d5db;border-radius:8px;background:#fff;
+    color:#0f2342;font-weight:600;text-decoration:none
+  }
+  .empty-state .btn-ghost:hover{filter:brightness(.97)}
+
+  .btn-filter{padding:10px 12px;border:0;border-radius:8px;background:#fff;color:#0f2342;font-weight:600;cursor:pointer;box-shadow:0 0 0 1px #d1d5db inset}
+  .btn-filter:hover{filter:brightness(.97)}
+
+  .modal{position:fixed;inset:0;display:none;z-index:50}
+  .modal[aria-hidden="false"]{display:block}
+  .modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+  .modal__panel{position:relative;max-width:min(980px,96vw);margin:6vh auto;background:#fff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.25);display:flex;flex-direction:column;overflow:hidden}
+  .modal__head,.modal__foot{padding:14px 16px; border-bottom:1px solid #eef1f; display:flex; align-items:center;}
+  .modal__foot{border-bottom:0;border-top:1px solid #eef1f5;display:flex;align-items:center;gap:10px}
+  .modal__body{padding:14px 16px;max-height:70vh;overflow:auto}
+  .modal__head h3{margin:0;font-size:18px}
+  .modal__close{border:0;background:#f3f4f6;border-radius:8px;padding:6px 10px;font-size:18px;margin-left:auto;cursor:pointer}
+  .spacer{flex:1}
+  .link-reset{color:#0f2342;text-decoration:none}
+  .link-reset:hover{text-decoration:underline}
+  .btn-apply{padding:10px 14px;border:0;border-radius:10px;background:#0f2342;color:#fff;font-weight:700;cursor:pointer}
+
+  .filters-grid{display:grid;grid-template-columns:repeat(3,minmax(160px,1fr));gap:12px;margin-bottom:10px}
+  .filters-grid label{display:flex;flex-direction:column;font-size:12px;gap:6px}
+  .filters-grid input,.filters-grid select{padding:8px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:14px}
+  .check-inline{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:13px}
+  .filters-grid .row-full { grid-column: 1 / -1; }
+
+  .range-wrap{display:grid;gap:14px}
+  .range-row{display:grid;gap:6px}
+  .range-label{font-size:12px;color:#374151;display:flex;align-items:center;gap:8px}
+  .range-val{font-size:12px;background:#0f2342;color:#fff;border-radius:999px;padding:2px 8px}
+  .dual{position:relative;height:38px;display:flex;align-items:center}
+  .dual input[type="range"]{position:absolute;left:0;right:0;margin:0;height:0;appearance:none;background:transparent;pointer-events:auto}
+  .dual input[type="range"]::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;background:#0f2342;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer;position:relative;z-index:2}
+  .dual input[type="range"]::-moz-range-thumb{width:18px;height:18px;border:none;border-radius:50%;background:#0f2342;box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer;position:relative;z-index:2}
+  .dual__track{position:absolute;left:4px;right:4px;height:6px;background:#e5e7eb;border-radius:999px}
+  .dual__track .fill{position:absolute;top:0;bottom:0;left:0;right:0;background:#0f2342;border-radius:999px}
+
+  @media (max-width: 720px){ .filters-grid{grid-template-columns:1fr} }
   </style>
 </head>
-<body>
-  <header>
-    <h1>SmartSpec</h1>
-    <nav>
-      <a href="{{route('home')}}">หน้าแรก</a>
-      <a href="{{route('news')}}">ข่าว</a>
-      <a href="#">เปรียบเทียบ</a>
-      <a href="{{ url('/login') }}">Login</a>
-      <a href="{{ url('/signup') }}">Sign Up</a>
-    </nav>
-  </header>
+<body style="margin:0;background:#f3f6fb;font-family:sans-serif;">
+  @include('layouts.navbar')
 
-  @php
-    // รองรับชื่อทั้ง $banners และ $banner
-    $banners = ($banners ?? $banner ?? collect());
-  @endphp
+  @php $banners = ($banners ?? $banner ?? collect()); @endphp
 
   @if($banners->count())
     <div class="banner-wrap">
       <button class="nav prev" type="button" aria-label="prev">‹</button>
-
       <div class="carousel">
         <div class="track">
           @foreach($banners as $b)
@@ -125,9 +118,7 @@
           @endforeach
         </div>
       </div>
-
       <button class="nav next" type="button" aria-label="next">›</button>
-
       <div class="dots" role="tablist" aria-label="banner dots">
         @foreach($banners as $i => $b)
           <button class="dot {{ $i===0?'is-active':'' }}" data-i="{{ $i }}" role="tab" aria-selected="{{ $i===0?'true':'false' }}"></button>
@@ -143,18 +134,180 @@
       <h3>แบรนด์</h3>
       <ul class="brand-list">
         @foreach($brands as $b)
-          <li><a href="{{ url('/brand?id='.$b->ID) }}">{{ $b->Brand }}</a></li>
+          <li>
+            <a href="{{ route('search', ['brand' => $b->ID]) }}"
+               style="{{ request('brand') == $b->ID ? 'font-weight:700;text-decoration:underline;' : '' }}">
+              {{ $b->Brand }}
+            </a>
+          </li>
         @endforeach
       </ul>
     </aside>
 
     <main class="content">
       <div class="search-box">
-        <form method="GET" action="{{ url('/search') }}">
-          <input type="text" name="q" placeholder="ค้นหามือถือ...">
+        <form method="GET" action="{{ route('search') }}">
+          <input type="text" name="q" placeholder="ค้นหามือถือ..." value="{{ request('q') }}">
           <button type="submit">ค้นหา</button>
+
+          <button type="button" id="openFilters" class="btn-filter">ตัวกรอง</button>
+          <input type="hidden" name="filters" id="filtersFlag" value="">
+
+          <!-- Modal -->
+          <div class="modal" id="filtersModal" aria-hidden="true">
+            <div class="modal__backdrop" data-close></div>
+            <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="filtersTitle">
+              <div class="modal__head">
+                <h3 id="filtersTitle">ตัวกรองทั้งหมด</h3>
+                <button type="button" class="modal__close" title="ปิด" data-close>×</button>
+              </div>
+
+              <div class="modal__body">
+                <div class="filters-grid">
+                  <label>
+                    แบรนด์
+                    <select name="brand">
+                      <option value="">— ทั้งหมด —</option>
+                      @foreach($brands as $b)
+                        <option value="{{ $b->ID }}" {{ (string)request('brand')===(string)$b->ID?'selected':'' }}>
+                          {{ $b->Brand }}
+                        </option>
+                      @endforeach
+                    </select>
+                  </label>
+
+                  <label>
+                    ระบบปฏิบัติการ
+                    <select name="os">
+                      <option value="">— ทั้งหมด —</option>
+                      @foreach(($osList ?? []) as $os)
+                        @if($os)
+                          <option value="{{ $os }}" {{ request('os')===$os?'selected':'' }}>{{ $os }}</option>
+                        @endif
+                      @endforeach
+                    </select>
+                  </label>
+
+                  <label>
+                    ชิป/โปรเซสเซอร์
+                    <select name="cpu">
+                      <option value="">— ทั้งหมด —</option>
+                      @foreach(($cpuList ?? []) as $cpu)
+                        @if($cpu)
+                          <option value="{{ $cpu }}" {{ request('cpu')===$cpu?'selected':'' }}>{{ $cpu }}</option>
+                        @endif
+                      @endforeach
+                    </select>
+                  </label>
+                </div>
+                <label class="check-inline row-full" style="margin-top:5px ; margin-bottom:15px">
+                  <input type="checkbox" name="has5g" value="1" {{ request('has5g')?'checked':'' }}>
+                  รองรับ 5G
+                </label>
+
+                <div class="range-wrap">
+                  <div class="range-row">
+                    <div class="range-label">RAM (GB) <span class="range-val" data-out="ram"></span></div>
+                    <div class="dual">
+                      <input type="range" min="0" max="24" step="1" value="{{ request('ram_min', 0) }}"  data-min="ram">
+                      <input type="range" min="0" max="24" step="1" value="{{ request('ram_max', 24) }}" data-max="ram">
+                      <div class="dual__track" data-track="ram"><div class="fill"></div></div>
+                    </div>
+                    <input type="hidden" name="ram_min" value="{{ request('ram_min') }}">
+                    <input type="hidden" name="ram_max" value="{{ request('ram_max') }}">
+                  </div>
+
+                  <div class="range-row">
+                    <div class="range-label">ขนาดจอ (นิ้ว) <span class="range-val" data-out="screen"></span></div>
+                    <div class="dual">
+                      <input type="range" min="4.0" max="7.5" step="0.1" value="{{ request('screen_min', 4.0) }}" data-min="screen">
+                      <input type="range" min="4.0" max="7.5" step="0.1" value="{{ request('screen_max', 7.5) }}" data-max="screen">
+                      <div class="dual__track" data-track="screen"><div class="fill"></div></div>
+                    </div>
+                    <input type="hidden" name="screen_min" value="{{ request('screen_min') }}">
+                    <input type="hidden" name="screen_max" value="{{ request('screen_max') }}">
+                  </div>
+
+                  <div class="range-row">
+                    <div class="range-label">กล้องหลัง (MP) <span class="range-val" data-out="rear"></span></div>
+                    <div class="dual">
+                      <input type="range" min="0" max="200" step="1" value="{{ request('rear_mp_min', 0) }}" data-min="rear">
+                      <input type="range" min="0" max="200" step="1" value="{{ request('rear_mp_max', 200) }}" data-max="rear">
+                      <div class="dual__track" data-track="rear"><div class="fill"></div></div>
+                    </div>
+                    <input type="hidden" name="rear_mp_min" value="{{ request('rear_mp_min') }}">
+                    <input type="hidden" name="rear_mp_max" value="{{ request('rear_mp_max') }}">
+                  </div>
+
+                  <div class="range-row">
+                    <div class="range-label">กล้องหน้า (MP) <span class="range-val" data-out="front"></span></div>
+                    <div class="dual">
+                      <input type="range" min="0" max="60" step="1" value="{{ request('front_mp_min', 0) }}" data-min="front">
+                      <input type="range" min="0" max="60" step="1" value="{{ request('front_mp_max', 60) }}" data-max="front">
+                      <div class="dual__track" data-track="front"><div class="fill"></div></div>
+                    </div>
+                    <input type="hidden" name="front_mp_min" value="{{ request('front_mp_min') }}">
+                    <input type="hidden" name="front_mp_max" value="{{ request('front_mp_max') }}">
+                  </div>
+
+                  <div class="range-row">
+                    <div class="range-label">แบตเตอรี่ (mAh) <span class="range-val" data-out="bat"></span></div>
+                    <div class="dual">
+                      <input type="range" min="1000" max="7000" step="100" value="{{ request('battery_min', 1000) }}" data-min="bat">
+                      <input type="range" min="1000" max="7000" step="100" value="{{ request('battery_max', 7000) }}" data-max="bat">
+                      <div class="dual__track" data-track="bat"><div class="fill"></div></div>
+                    </div>
+                    <input type="hidden" name="battery_min" value="{{ request('battery_min') }}">
+                    <input type="hidden" name="battery_max" value="{{ request('battery_max') }}">
+                  </div>
+
+                  <div class="range-row">
+                    <div class="range-label">ราคา (บาท) <span class="range-val" data-out="price"></span></div>
+                    <div class="dual">
+                      <input type="range" min="0" max="80000" step="500" value="{{ request('price_min', 0) }}" data-min="price">
+                      <input type="range" min="0" max="80000" step="500" value="{{ request('price_max', 80000) }}" data-max="price">
+                      <div class="dual__track" data-track="price"><div class="fill"></div></div>
+                    </div>
+                    <input type="hidden" name="price_min" value="{{ request('price_min') }}">
+                    <input type="hidden" name="price_max" value="{{ request('price_max') }}">
+                  </div>
+
+                  <div class="range-row">
+                    <div class="range-label">ปีเปิดตัว <span class="range-val" data-out="year"></span></div>
+                    <div class="dual">
+                      <input type="range" min="2012" max="2030" step="1" value="{{ request('year_from', 2012) }}" data-min="year">
+                      <input type="range" min="2012" max="2030" step="1" value="{{ request('year_to', 2030) }}" data-max="year">
+                      <div class="dual__track" data-track="year"><div class="fill"></div></div>
+                    </div>
+                    <input type="hidden" name="year_from" value="{{ request('year_from') }}">
+                    <input type="hidden" name="year_to" value="{{ request('year_to') }}">
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="modal__foot">
+                <button type="button" class="link-reset" id="clearFilters"
+                        data-clear-url="{{ route('search') }}">
+                  ล้างตัวกรอง
+                </button>
+                <div class="spacer"></div>
+                <button type="submit" class="btn-apply" id="applyFilters">ใช้ตัวกรอง</button>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
+
+      @php
+        $hasFilters = collect([
+          'q','brand','os','cpu',
+          'ram_min','ram_max','screen_min','screen_max',
+          'rear_mp_min','rear_mp_max','front_mp_min','front_mp_max',
+          'battery_min','battery_max','price_min','price_max',
+          'year_from','year_to','has5g'
+        ])->some(fn($k)=>request()->filled($k));
+      @endphp
 
       <div class="mobile-grid">
         @forelse($mobiles as $m)
@@ -162,121 +315,174 @@
             $imgPath = $m->coverImage?->Img ?? $m->images->first()?->Img ?? null;
             $imgUrl  = $imgPath ? asset('storage/'.$imgPath) : asset('images/default.jpg');
           @endphp
-          <div class="mobile-card">
-            <img src="{{ $imgUrl }}" alt="{{ $m->Model }}">
-            <h3>{{ $m->Model }}</h3>
-          </div>
+          <a href="{{ route('mobile.show', $m->ID) }}" class="mobile-card-link">
+            <div class="mobile-card">
+              <img src="{{ $imgUrl }}" alt="{{ $m->Model }}">
+              <h3>{{ $m->Model }}</h3>
+            </div>
+          </a>
         @empty
-          @for($i=0;$i<16;$i++)<div class="mobile-card placeholder"></div>@endfor
+          <div class="empty-state">
+            <h3>ไม่พบผลลัพธ์</h3>
+            @if($hasFilters)
+              <p>ลองปรับตัวกรอง หรือเริ่มใหม่ด้วยการล้างตัวกรอง</p>
+              <a href="{{ route('home') }}" class="btn-ghost">ล้างตัวกรอง</a>
+            @else
+              <p>ยังไม่มีข้อมูลมือถือในระบบ</p>
+            @endif
+          </div>
         @endforelse
       </div>
+
+      @if(method_exists($mobiles, 'links') && $mobiles->total() > 0)
+        <div style="margin-top:12px; text-align:center;">
+          {{ $mobiles->links() }}
+        </div>
+      @endif
     </main>
   </div>
 
   <script>
-  /* ===== Center-mode Infinite Carousel (เดินหน้าเรื่อย ๆ แล้ววาร์ปเงียบ ๆ) ===== */
+  /* Carousel (robust) */
   (function(){
-    const wrap = document.querySelector('.banner-wrap');
-    if(!wrap) return;
-
+    const wrap = document.querySelector('.banner-wrap'); if(!wrap) return;
     const carousel = wrap.querySelector('.carousel');
-    const track    = wrap.querySelector('.track');
-    const prevBtn  = wrap.querySelector('.prev');
-    const nextBtn  = wrap.querySelector('.next');
-    const dots     = Array.from(wrap.querySelectorAll('.dot'));
+    const track = wrap.querySelector('.track');
+    const prevBtn = wrap.querySelector('.prev');
+    const nextBtn = wrap.querySelector('.next');
+    const dots = Array.from(wrap.querySelectorAll('.dot'));
 
     const realSlides = Array.from(track.children);
+    if (realSlides.length <= 1) { prevBtn?.setAttribute('disabled','true'); nextBtn?.setAttribute('disabled','true'); return; }
 
-    // ทำ clone หัว/ท้าย เพื่อให้เลื่อนต่อเนื่องแบบไม่ย้อนกลับ
     const head = realSlides[0].cloneNode(true);
-    const tail = realSlides[realSlides.length-1].cloneNode(true);
+    const tail = realSlides[realSlides.length - 1].cloneNode(true);
     track.insertBefore(tail, realSlides[0]);
     track.appendChild(head);
 
-    let all   = Array.from(track.children);      // รวม clone แล้ว
-    let idx   = 1;                               // เริ่มหลัง tail clone (ตัวจริงสไลด์แรก)
-    let gapPx = 48;                              // ต้องตรงกับ CSS .track{gap:48px}
-    let itemW = all[idx].offsetWidth;
+    let all = Array.from(track.children);
+    let idx = 1;
+    let gapPx = 48;
+    let itemW = 0;
     let centerOffset = 0;
+    let isAnimating = false;
+    let timer = null;
 
-    function readGap(){
-      const g = getComputedStyle(track).gap || getComputedStyle(track)['column-gap'];
-      const n = parseFloat(g || '48');
-      gapPx = isNaN(n) ? 48 : n;
-    }
-    function measure(){
-      readGap();
-      itemW = all[idx].offsetWidth;
-      centerOffset = (carousel.clientWidth - itemW)/2;
-      setX();
-    }
-    function setX(){
-      // จัดสไลด์ index ปัจจุบันให้อยู่ "ตรงกลาง"
-      track.style.transform = `translateX(${centerOffset - idx*(itemW + gapPx)}px)`;
-    }
-
-    // เริ่มต้น (ปิด transition ครั้งแรกเพื่อจัดตำแหน่ง)
-    track.style.transition = 'none';
-    measure();
-    requestAnimationFrame(()=>track.style.transition = 'transform .5s ease');
-
-    function setActive(){
-      all.forEach(el=>el.classList.remove('is-active'));
+    const readGap = () => { const s = getComputedStyle(track); const g = parseFloat(s.gap || s['column-gap'] || '48'); gapPx = isNaN(g) ? 48 : g; };
+    const measure = () => { readGap(); itemW = all[idx].offsetWidth; centerOffset = (carousel.clientWidth - itemW) / 2; setX(); };
+    const setX = () => { track.style.transform = `translateX(${centerOffset - idx * (itemW + gapPx)}px)`; };
+    const setActive = () => {
+      all.forEach(el => el.classList.remove('is-active'));
       all[idx]?.classList.add('is-active');
+      let real = idx - 1; if (real < 0) real = realSlides.length - 1; if (real >= realSlides.length) real = 0;
+      dots.forEach(d => d.classList.remove('is-active')); dots[real]?.classList.add('is-active');
+    };
 
-      // map indexจริง -> dot
-      let real = idx - 1;
-      if(real < 0) real = realSlides.length - 1;
-      if(real >= realSlides.length) real = 0;
-      dots.forEach(d=>d.classList.remove('is-active'));
-      dots[real]?.classList.add('is-active');
-    }
-    setActive();
-
-    function go(step){
-      idx += step;             // เดินหน้าหรือถอยหลัง
+    const go = (step) => {
+      if (isAnimating) return;
+      isAnimating = true;
+      idx += step;
       track.style.transition = 'transform .5s ease';
       setX();
+      clearTimeout(go._fallback);
+      go._fallback = setTimeout(()=> handleEdgeSnap(), 600);
+    };
+
+    function handleEdgeSnap(){
+      if (idx === all.length - 1) { track.style.transition = 'none'; idx = 1; setX(); requestAnimationFrame(()=> track.style.transition = 'transform .5s ease'); }
+      else if (idx === 0)       { track.style.transition = 'none'; idx = realSlides.length; setX(); requestAnimationFrame(()=> track.style.transition = 'transform .5s ease'); }
+      setActive(); isAnimating = false;
     }
 
-    nextBtn.addEventListener('click', ()=>go(1));
-    prevBtn.addEventListener('click', ()=>go(-1));
+    track.style.transition = 'none';
+    measure();
+    requestAnimationFrame(()=> track.style.transition = 'transform .5s ease');
+    setActive();
 
-    // คลิกสไลด์ไหน ให้เลื่อนมาจัดกลางสไลด์นั้น
-    track.addEventListener('click', e=>{
-      const slide = e.target.closest('.slide');
-      if(!slide) return;
-      idx = all.indexOf(slide);
-      go(0);
+    nextBtn?.addEventListener('click', ()=> go(1));
+    prevBtn?.addEventListener('click', ()=> go(-1));
+
+    track.addEventListener('click', (e)=>{ const slide = e.target.closest('.slide'); if(!slide) return; const i = all.indexOf(slide); if (i > -1) go(i - idx); });
+    dots.forEach((d,i)=> d.addEventListener('click', ()=> { const target = i + 1; if (target !== idx) go(target - idx); }));
+    track.addEventListener('transitionend', handleEdgeSnap);
+
+    function startAuto(){ timer = setInterval(()=> go(1), 3500); }
+    function stopAuto(){ clearInterval(timer); timer = null; }
+    startAuto();
+    wrap.addEventListener('mouseenter', stopAuto);
+    wrap.addEventListener('mouseleave', ()=> { if(!timer) startAuto(); });
+    document.addEventListener('visibilitychange', ()=>{ if (document.hidden) stopAuto(); else { measure(); startAuto(); } });
+    window.addEventListener('resize', ()=> requestAnimationFrame(measure));
+    Array.from(track.querySelectorAll('img')).forEach(img=>{ if(img.complete) return; img.addEventListener('load', ()=> requestAnimationFrame(measure), {once:true}); });
+  })();
+
+  /* Modal + Sliders */
+  (function(){
+    const modal   = document.getElementById('filtersModal');
+    const openBtn = document.getElementById('openFilters');
+    const closeEls= modal.querySelectorAll('[data-close]');
+    const applyBtn= document.getElementById('applyFilters');
+
+    const open  = ()=> modal.setAttribute('aria-hidden','false');
+    const close = ()=> modal.setAttribute('aria-hidden','true');
+
+    openBtn?.addEventListener('click', open);
+    closeEls.forEach(el=>el.addEventListener('click', close));
+    document.addEventListener('keydown', e => { if(e.key==='Escape') close(); });
+
+    applyBtn?.addEventListener('click', () => { close(); });
+
+    const clearBtn = document.getElementById('clearFilters');
+    clearBtn?.addEventListener('click', () => {
+      close();
+      const url = clearBtn.dataset.clearUrl || '{{ route('search') }}';
+      setTimeout(()=> { window.location.assign(url); }, 120);
     });
 
-    dots.forEach((d,i)=>d.addEventListener('click', ()=>{
-      idx = i + 1; // +1 เพราะด้านหน้ามี tail clone
-      go(0);
-    }));
+    function setupDual(key, fmt, hiddenMinName=null, hiddenMaxName=null){
+      const min   = modal.querySelector(`input[data-min="${key}"]`);
+      const max   = modal.querySelector(`input[data-max="${key}"]`);
+      const track = modal.querySelector(`.dual__track[data-track="${key}"]`);
+      const out   = modal.querySelector(`[data-out="${key}"]`);
+      const hMin  = modal.querySelector(`input[name="${hiddenMinName || (key+'_min')}"]`);
+      const hMax  = modal.querySelector(`input[name="${hiddenMaxName || (key+'_max')}"]`);
+      if(!min||!max||!track||!out) return;
 
-    // วาร์ป “หลังจบแอนิเมชัน” เพื่อความเนียน
-    track.addEventListener('transitionend', ()=>{
-      if(idx === all.length-1){      // ไป head clone (เลยหัว)
-        track.style.transition = 'none';
-        idx = 1;                     // วาร์ปกลับสไลด์จริงตัวแรกแบบไม่กระพริบ
-        setX(); requestAnimationFrame(()=>track.style.transition = 'transform .5s ease');
+      const fill = track.querySelector('.fill') || track.appendChild(Object.assign(document.createElement('div'),{className:'fill'}));
+      const lo = parseFloat(min.min), hi = parseFloat(min.max);
+      const pct = v => ((v-lo)/(hi-lo))*100;
+
+      function render(){
+        let a = parseFloat(min.value), b = parseFloat(max.value);
+        if(a>b){ [a,b]=[b,a]; min.value=a; max.value=b; }
+        fill.style.left  = pct(a)+'%';
+        fill.style.right = (100-pct(b))+'%';
+        out.textContent  = fmt(a)+' – '+fmt(b);
+        if(hMin) hMin.value = a;
+        if(hMax) hMax.value = b;
       }
-      if(idx === 0){                 // ไป tail clone (เลยท้าย)
-        track.style.transition = 'none';
-        idx = realSlides.length;     // วาร์ปไปสไลด์จริงตัวสุดท้าย
-        setX(); requestAnimationFrame(()=>track.style.transition = 'transform .5s ease');
-      }
-      setActive();
-    });
+      min.addEventListener('input', render);
+      max.addEventListener('input', render);
+      render();
+    }
 
-    // autoplay (หยุดเมื่อโฮเวอร์)
-    let timer = setInterval(()=>go(1), 3500);
-    wrap.addEventListener('mouseenter', ()=>clearInterval(timer));
-    wrap.addEventListener('mouseleave', ()=>timer = setInterval(()=>go(1), 3500));
+    const fmt = {
+      price:v=>Number(v).toLocaleString()+' บาท',
+      bat:  v=>Number(v).toLocaleString()+' mAh',
+      rear: v=>v+' MP',
+      front:v=>v+' MP',
+      screen:v=>Number(v).toFixed(1)+'"',
+      ram:  v=>v+' GB',
+      year: v=>v
+    };
 
-    // รีคำนวณเมื่อ resize
-    window.addEventListener('resize', ()=>requestAnimationFrame(measure));
+    setupDual('ram',    fmt.ram);
+    setupDual('screen', fmt.screen);
+    setupDual('price',  fmt.price);
+    setupDual('rear',   fmt.rear,  'rear_mp_min','rear_mp_max');
+    setupDual('front',  fmt.front, 'front_mp_min','front_mp_max');
+    setupDual('bat',    fmt.bat,   'battery_min','battery_max');
+    setupDual('year',   fmt.year,  'year_from','year_to');
   })();
   </script>
 </body>

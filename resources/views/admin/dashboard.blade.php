@@ -61,8 +61,8 @@
       <div class="n">{{ $newsCount ?? 0 }}</div>
     </div>
     <div class="card">
-      <div class="kpi">เข้าใช้งานวันนี้</div>
-      <div class="n">{{ $todayVisits ?? 0 }}</div>
+      <div class="kpi">เข้าชมเว็บไซต์วันนี้</div>
+      <div class="n">{{ number_format($todayVisitors ?? 0) }}</div>
     </div>
   </section><br>
 

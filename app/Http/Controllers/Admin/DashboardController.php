@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\MobileInfo;
 use App\Models\MobileNews;
+use App\Models\User;
+use App\Models\Visit;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 class DashboardController extends Controller
 {
@@ -32,7 +37,18 @@ class DashboardController extends Controller
             ->limit(2)
             ->get();
 
-        $newsCount  = MobileNews::count();    
+        $newsCount  = MobileNews::count(); 
+        $membersCount = User::count();   
+
+        $start = now()->startOfDay();
+        $end   = now()->endOfDay();
+
+        $todayVisitors = Visit::whereBetween('created_at', [
+                          now()->startOfDay(),
+                          now()->endOfDay()
+                      ])
+                      ->distinct('ip')
+                      ->count('ip');
 
         // ส่งตัวแปรทั้งหมดให้ blade
         return view('admin.dashboard', [
@@ -42,11 +58,9 @@ class DashboardController extends Controller
             'recentPhones'  => $recentPhones,
             'newsCount'     => $newsCount,
             'recentNews'    => $recentNews,
-
-            // ที่เหลือยังไม่ทำ( ถ้าอารมณ์ดีอาจทำ)
-            'membersCount'  => 0,
-            'todayVisits'   => 0,
-            'recentMembers' => collect(),
+            'membersCount'  => $membersCount,
+            'todayVisitors'   => $todayVisitors,
+            //'recentMembers' => collect(),
         ]);
     }
 }

@@ -67,9 +67,9 @@
                 @php $img = $row->firstImage?->Img; @endphp
                 @if($img)
                   <img src="{{ asset('storage/'.$img) }}" alt="{{ $row->Model }}"
-                       style="width:150px;height:90px;object-fit:cover;border-radius:8px;display:inline-block">
+                       style="width:150px;height:150px;object-fit:cover;border-radius:8px;display:inline-block">
                 @else
-                  <div style="width:150px;height:90px;border:1px dashed var(--line);border-radius:8px;
+                  <div style="width:150px;height:150px;border:1px dashed var(--line);border-radius:8px;
                               display:inline-flex;align-items:center;justify-content:center;color:#9ca3af;font-size:12px">
                     ไม่มีรูป
                   </div>
