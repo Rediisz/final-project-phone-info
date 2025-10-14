@@ -104,7 +104,15 @@
 
     {{-- Pagination --}}
     <div style="margin-top:10px">
-      {{ $items->links() }}
+      @if(method_exists($items,'hasPages') && $items->hasPages())
+        @php($prev = $items->previousPageUrl())
+        @php($next = $items->nextPageUrl())
+        <div style="display:flex;justify-content:center;align-items:center;gap:10px">
+          <a href="{{ $prev ?: '#' }}" style="padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#0f2342;text-decoration:none;{{ $prev ? '' : 'pointer-events:none;opacity:.4' }}">ก่อนหน้า</a>
+          <span style="color:#6b7280">หน้า {{ method_exists($items,'currentPage') ? $items->currentPage() : '' }} @if(method_exists($items,'lastPage'))/ {{ $items->lastPage() }} @endif</span>
+          <a href="{{ $next ?: '#' }}" style="padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#0f2342;text-decoration:none;{{ $next ? '' : 'pointer-events:none;opacity:.4' }}">ถัดไป</a>
+        </div>
+      @endif
     </div>
   </div>
 @endsection

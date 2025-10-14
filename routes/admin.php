@@ -7,8 +7,11 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MobileController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\BrandController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
+
+
     // --- Login / OAuth (เฉพาะคนที่ยังไม่ได้ล็อกอินใน guard:admin) ---
     Route::middleware('guest:admin')->group(function () {
         Route::get('/login',  [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -49,5 +52,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('phones', MobileController::class)
             ->names('phones')
             ->parameters(['phones' => 'mobile']);
+        
+        // Brand
+        Route::resource('brands', BrandController::class)->except(['show']);
+        
     });
 });

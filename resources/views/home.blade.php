@@ -42,7 +42,9 @@
   .search-box button{padding:10px 14px;border:0;border-radius:8px;background:#0f2342;color:#fff;font-weight:600;cursor:pointer}
   .search-box button:hover{filter:brightness(.95)}
 
-  .mobile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;padding:20px 0}
+  .mobile-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:16px;padding:20px 0}
+  @media (max-width: 1200px){ .mobile-grid{grid-template-columns:repeat(4,1fr)} }
+  @media (max-width: 720px){  .mobile-grid{grid-template-columns:repeat(2,1fr)} }
   .mobile-card{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,35,66,.08);text-align:center;padding:10px;min-height:200px;transition:transform .15s}
   .mobile-card:hover{transform:translateY(-2px)}
   .mobile-card img{max-width:100%;height:160px;object-fit:contain;margin-bottom:8px}
@@ -97,6 +99,57 @@
   .dual input[type="range"]::-moz-range-thumb{width:18px;height:18px;border:none;border-radius:50%;background:#0f2342;box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer;position:relative;z-index:2}
   .dual__track{position:absolute;left:4px;right:4px;height:6px;background:#e5e7eb;border-radius:999px}
   .dual__track .fill{position:absolute;top:0;bottom:0;left:0;right:0;background:#0f2342;border-radius:999px}
+  /* ===== Brand panel (เหมือน home.blade) ===== */
+  /* กล่องครอบ */
+  .brand-panel{
+    background:#fff; border:1px solid #e5e7eb; border-radius:14px;
+    padding:12px; box-shadow:0 2px 10px rgba(15,35,66,.05);
+  }
+  .brand-panel__head{ font-weight:700; margin:0 0 10px; color:#0f2342 }
+
+  /* กริดโลโก้ */
+  .brand-grid{
+    list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:10px;
+  }
+  @media (max-width: 760px){
+    .brand-grid{ grid-template-columns:repeat(3,1fr); }
+  }
+  .brand-grid__item{ margin:0; padding:0 }
+
+  /* ไทล์โลโก้ */
+  .brand-logo{
+    display:flex; align-items:center; justify-content:center;
+    height:64px; border-radius:12px;
+    background:#f8fafc; border:1px solid #e5e7eb;
+    text-decoration:none; overflow:hidden; padding:8px;
+    box-shadow:0 1px 3px rgba(15,35,66,.04) inset;
+  }
+  .brand-logo:hover{ filter:brightness(.98) }
+  .brand-logo.is-active{
+    background:#fff; border-color:#0f2342;
+    box-shadow:0 0 0 3px rgba(15,35,66,.12);
+  }
+
+  /* รูปโลโก้ให้อยู่กลางพอดีและไม่ล้น */
+  .brand-logo img{
+    display:block; width:100%; height:100%;
+    object-fit:contain;
+  }
+
+  /* กรณีไม่มีโลโก้ */
+  .no-logo{
+    width:40px; height:40px; border-radius:50%;
+    display:grid; place-items:center;
+    background:#eef2f7; color:#0f2342; font-weight:700;
+  }
+
+  /* ซ่อนข้อความเพื่อการเข้าถึง */
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
 
   @media (max-width: 720px){ .filters-grid{grid-template-columns:1fr} }
   </style>
@@ -131,18 +184,42 @@
 
   <div class="layout">
     <aside class="sidebar">
-      <h3>แบรนด์</h3>
-      <ul class="brand-list">
-        @foreach($brands as $b)
-          <li>
-            <a href="{{ route('search', ['brand' => $b->ID]) }}"
-               style="{{ request('brand') == $b->ID ? 'font-weight:700;text-decoration:underline;' : '' }}">
-              {{ $b->Brand }}
-            </a>
-          </li>
-        @endforeach
-      </ul>
+      <div class="brand-panel">
+        <div class="brand-panel__head">แบรนด์</div>
+
+        <ul class="brand-grid">
+          @foreach($brands as $b)
+            @php
+              // สถานะถูกเลือก?
+              $active = (string)request('brand') === (string)$b->ID;
+
+              // เก็บพารามิเตอร์ตัวกรองเดิมทั้งหมด (ยกเว้น page)
+              $qAll = request()->except('page');
+
+              // ถ้ากดซ้ำที่แบรนด์เดิม → ล้าง brand ออก
+              $href = $active
+                ? route('news', array_filter(array_merge($qAll, ['brand' => null])))
+                : route('news', array_merge($qAll, ['brand' => $b->ID]));
+            @endphp
+
+            <li class="brand-grid__item">
+              <a href="{{ $href }}"
+                class="brand-logo {{ $active ? 'is-active' : '' }}"
+                title="{{ $b->Brand }}"
+                aria-pressed="{{ $active ? 'true' : 'false' }}">
+                @if($b->Logo_Path)
+                  <img src="{{ asset('storage/'.$b->Logo_Path) }}" alt="{{ $b->Brand }}" loading="lazy">
+                @else
+                  <span class="no-logo">{{ mb_substr($b->Brand,0,1) }}</span>
+                @endif
+                <span class="sr-only">{{ $b->Brand }}</span>
+              </a>
+            </li>
+          @endforeach
+        </ul>
+      </div>
     </aside>
+
 
     <main class="content">
       <div class="search-box">
@@ -287,8 +364,8 @@
               </div>
 
               <div class="modal__foot">
-                <button type="button" class="link-reset" id="clearFilters"
-                        data-clear-url="{{ route('search') }}">
+              <button type="button" class="link-reset" id="clearFilters"
+                      data-clear-url="{{ route('home') }}">
                   ล้างตัวกรอง
                 </button>
                 <div class="spacer"></div>
@@ -334,9 +411,17 @@
         @endforelse
       </div>
 
-      @if(method_exists($mobiles, 'links') && $mobiles->total() > 0)
-        <div style="margin-top:12px; text-align:center;">
-          {{ $mobiles->links() }}
+      @if(method_exists($mobiles, 'hasPages') && $mobiles->hasPages())
+        @php
+          $prev = $mobiles->previousPageUrl();
+          $next = $mobiles->nextPageUrl();
+        @endphp
+        <div style="margin:14px 0;display:flex;justify-content:center;align-items:center;gap:10px">
+          <a href="{{ $prev ?: '#' }}" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#0f2342;text-decoration:none;{{ $prev ? '' : 'pointer-events:none;opacity:.4' }}">ก่อนหน้า</a>
+          @if(method_exists($mobiles,'currentPage'))
+            <span style="font-size:14px;color:#6b7280">หน้า {{ $mobiles->currentPage() }} @if(method_exists($mobiles,'lastPage')) / {{ $mobiles->lastPage() }} @endif</span>
+          @endif
+          <a href="{{ $next ?: '#' }}" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#0f2342;text-decoration:none;{{ $next ? '' : 'pointer-events:none;opacity:.4' }}">ถัดไป</a>
         </div>
       @endif
     </main>

@@ -12,13 +12,12 @@ class BannerController extends Controller
     // LIST
     public function index()
     {
-        // เรียงด้วย sort_order ก่อน แล้วค่อย fallback ด้วย bannerID (ใหม่กว่าอยู่บนเมื่อ sort เท่ากัน)
+        // เรียงด้วย sort_order ก่อน แล้ว fallback ด้วย bannerID (ใหม่กว่าอยู่บนเมื่อ sort เท่ากัน)
         $banners = Banner::orderBy('sort_order')
             ->orderByDesc('bannerID')
             ->paginate(15);
 
         return view('admin.banners.index', compact('banners'));
-
     }
 
     // CREATE FORM
@@ -32,24 +31,24 @@ class BannerController extends Controller
     {
         $request->validate([
             'bannerName' => ['required','string','max:255'],
-            // ถ้าอยากบังคับขนาด ให้เพิ่ม dimensions:width=1200,height=650
             'image'      => ['required','image','mimes:jpg,jpeg,png,webp','max:4096'],
             'is_active'  => ['nullable','boolean'],
             'sort_order' => ['nullable','integer'],
         ]);
 
         // เก็บไฟล์
-        $path = $request->file('image')->store('banners', 'public'); // ได้พาธเช่น banners/1727092834.jpg
+        $path = $request->file('image')->store('banners', 'public');
 
         Banner::create([
             'bannerName' => $request->bannerName,
-            'bannerImg'  => $path, // เก็บพาธไฟล์ (VARCHAR)
+            'bannerImg'  => $path,
             'is_active'  => $request->boolean('is_active'),
             'sort_order' => $request->input('sort_order', 0),
         ]);
 
+        // ✅ ใช้ ok ให้ตรงกับ layout
         return redirect()->route('admin.banners.index')
-                        ->with('success', 'เพิ่มแบนเนอร์เรียบร้อยแล้ว');
+                         ->with('ok', 'เพิ่มแบนเนอร์เรียบร้อยแล้ว');
     }
 
     // EDIT FORM
@@ -75,20 +74,19 @@ class BannerController extends Controller
         ];
 
         if ($request->hasFile('image')) {
-            // ลบไฟล์เก่า (ถ้ามี)
             if ($banner->bannerImg && Storage::disk('public')->exists($banner->bannerImg)) {
                 Storage::disk('public')->delete($banner->bannerImg);
             }
-            // เก็บไฟล์ใหม่
             $data['bannerImg'] = $request->file('image')->store('banners', 'public');
         }
 
         $banner->update($data);
 
-        return redirect()->route('admin.banners.index')->with('success','อัปเดตแบนเนอร์เรียบร้อย');
+        return redirect()->route('admin.banners.index')
+                         ->with('ok', 'อัปเดตแบนเนอร์เรียบร้อยแล้ว');
     }
 
-    // TOGGLE ACTIVE (รองรับ AJAX)
+    // TOGGLE ACTIVE
     public function toggle(Request $request, Banner $banner)
     {
         $banner->is_active = ! $banner->is_active;
@@ -102,10 +100,10 @@ class BannerController extends Controller
             ]);
         }
 
-        return back()->with('success','อัปเดตสถานะแบนเนอร์แล้ว');
+        return back()->with('ok', 'อัปเดตสถานะแบนเนอร์แล้ว');
     }
 
-    // SORT (สลับกับเพื่อนบ้าน)
+    // SORT
     public function sort(Banner $banner, string $direction)
     {
         if (!in_array($direction, ['up','down'])) {
@@ -130,16 +128,19 @@ class BannerController extends Controller
             $banner->save();
         }
 
-        return back()->with('success', 'จัดลำดับแบนเนอร์แล้ว');
+        return back()->with('ok', 'จัดลำดับแบนเนอร์แล้ว');
     }
-    
+
+    // DESTROY
     public function destroy(Banner $banner)
     {
         if ($banner->bannerImg && Storage::disk('public')->exists($banner->bannerImg)) {
             Storage::disk('public')->delete($banner->bannerImg);
         }
+
         $banner->delete();
 
-        return redirect()->route('admin.banners.index')->with('success','ลบแบนเนอร์เรียบร้อย');
+        return redirect()->route('admin.banners.index')
+                         ->with('ok', 'ลบแบนเนอร์เรียบร้อยแล้ว');
     }
 }

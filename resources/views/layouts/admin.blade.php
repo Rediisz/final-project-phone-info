@@ -73,6 +73,9 @@
 
       <a class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}"
          href="{{ route('admin.banners.index') }}">📢 แบนเนอร์</a>
+  
+      <a class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"
+         href="{{ route('admin.brands.index') }}">🏷️ ข้อมูลแบรนด์</a>
 
       <a class="{{ request()->routeIs('admin.phones.*') ? 'active' : '' }}"
          href="{{ route('admin.phones.index') }}">📱 ข้อมูลมือถือ</a>
@@ -102,6 +105,41 @@
       @yield('content')
     </div>
   </main>
+  {{-- SweetAlert2 CDN --}}
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  {{-- Global Flash -> Toast --}}
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    @if(session('ok'))
+      Swal.fire({
+        icon: 'success',
+        title: @json(session('ok')),
+        confirmButtonText: 'ตกลง',
+        confirmButtonColor: '#0f2342'
+      });
+    @endif
+
+    @if(session('error'))
+      Swal.fire({
+        icon: 'error',
+        title: @json(session('error')),
+        confirmButtonText: 'ตกลง',
+        confirmButtonColor: '#0f2342'
+      });
+    @endif
+
+    @if(session('info'))
+      Swal.fire({
+        icon: 'info',
+        title: @json(session('info')),
+        confirmButtonText: 'ตกลง',
+        confirmButtonColor: '#0f2342'
+      });
+    @endif
+  });
+  </script>
+
 
   {{-- ===== Scripts กลาง ===== --}}
   <script>

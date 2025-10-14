@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Facades\Route;
 
 class Authenticate extends Middleware
 {
@@ -10,12 +11,16 @@ class Authenticate extends Middleware
     {
         if ($request->expectsJson()) return null;
 
-        // ถ้า URL เป็นของแอดมิน ให้เด้งไปหน้า login แอดมิน
-        if ($request->is('admin/*') || $request->routeIs('admin.*')) {
-            return route('admin.login');
+        // รองรับโปรเจ็กต์ที่อยู่ใต้ subfolder เช่น /Final_Project/public/...
+        $firstSegment = $request->segment(1); // "admin" | "login" | ฯลฯ
+        $isAdminArea  = ($firstSegment === 'admin') || ($request->route() && $request->route()->named('admin.*'));
+
+        if ($isAdminArea) {
+            // ถ้ามี route ชื่อ admin.login ใช้อันนั้น ไม่มีก็ fallback เป็น /admin/login
+            return Route::has('admin.login') ? route('admin.login') : url('/admin/login');
         }
 
-        // อื่น ๆ เป็นหน้าบ้าน
-        return route('login');
+        // โซนอื่น ๆ ให้ใช้ /login ปกติ (หรือ route('login') ถ้ามี)
+        return Route::has('login') ? route('login') : url('/login');
     }
 }

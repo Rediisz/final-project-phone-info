@@ -137,6 +137,59 @@
               <li>วันที่เปิดตัว: {{ $launch }}</li>
             @endif
           </ul>
+          @php
+            $fmt = [
+              'val' => fn($v, $suffix = '') => (isset($v) && $v !== '') ? (is_numeric($v) ? rtrim(rtrim((string)$v,'0'),'.') : $v) . $suffix : '- ',
+              'yn'  => fn($v) => is_null($v) ? '- ' : ($v ? 'Yes' : 'No'),
+            ];
+          @endphp
+
+          <ul class="specs-list">
+            <li>Series: {{ $fmt['val']($m->Series) }}</li>
+            <li>Variant: {{ $fmt['val']($m->Variant) }}</li>
+            <li>Colors: {{ $fmt['val']($m->ColorOptions) }}</li>
+            <li>Material: {{ $fmt['val']($m->Material) }}</li>
+            <li>Dimensions: {{ $fmt['val']($m->Dimensions) }}</li>
+            <li>Weight: {{ $fmt['val']($m->Weight_g,' g') }}</li>
+
+            <li>Display type: {{ $fmt['val']($m->Display_Type) }}</li>
+            <li>Resolution: {{ $fmt['val']($m->Display_Resolution) }}</li>
+            <li>Refresh rate: {{ $fmt['val']($m->Display_RefreshRate,' Hz') }}</li>
+            <li>Brightness: {{ $fmt['val']($m->Display_Brightness) }}</li>
+            <li>Protection: {{ $fmt['val']($m->Display_Protection) }}</li>
+
+            <li>RAM type: {{ $fmt['val']($m->RAM_Type) }}</li>
+            <li>Storage type: {{ $fmt['val']($m->Storage_Type) }}</li>
+            <li>Expandable: {{ $fmt['yn']($m->Expandable) }}</li>
+
+            <li>OS: {{ $fmt['val']($m->OS) }}</li>
+            <li>UI skin: {{ $fmt['val']($m->UI_Skin) }}</li>
+            <li>OS version: {{ $fmt['val']($m->OS_Version) }}</li>
+            <li>OS updates: {{ $fmt['val']($m->OS_Updates_Years,' yrs') }}</li>
+
+            <li>Wi‑Fi: {{ $fmt['val']($m->Wifi_Std) }}</li>
+            <li>Bluetooth: {{ $fmt['val']($m->Bluetooth) }}</li>
+            <li>NFC: {{ $fmt['yn']($m->NFC) }}</li>
+            <li>GPS: {{ $fmt['val']($m->GPS) }}</li>
+            <li>Infrared: {{ $fmt['yn']($m->Infrared) }}</li>
+            <li>USB: {{ $fmt['val']($m->USB_Type) }}</li>
+            <li>SIM: {{ $fmt['val']($m->Sim_Type) }}</li>
+            <li>eSIM: {{ $fmt['yn']($m->eSIM) }}</li>
+            <li>3.5mm jack: {{ $fmt['yn']($m->Jack35) }}</li>
+            <li>Stereo speakers: {{ $fmt['yn']($m->Stereo_Speakers) }}</li>
+            <li>Dolby Atmos: {{ $fmt['yn']($m->Dolby_Atmos) }}</li>
+
+            <li>Fingerprint: {{ $fmt['val']($m->Fingerprint_Type) }}</li>
+            <li>Face unlock: {{ $fmt['yn']($m->Face_Unlock) }}</li>
+            <li>Front cam features: {{ $fmt['val']($m->FrontCamera_Features) }}</li>
+            <li>Rear cam features: {{ $fmt['val']($m->RearCamera_Features) }}</li>
+            <li>Video recording: {{ $fmt['val']($m->Video_Recording) }}</li>
+
+            <li>Battery type: {{ $fmt['val']($m->Battery_Type) }}</li>
+            <li>Charge (wired): {{ $fmt['val']($m->Charging_Wired_Watt,' W') }}</li>
+            <li>Charge (wireless): {{ $fmt['val']($m->Charging_Wireless_Watt,' W') }}</li>
+            <li>Reverse charge: {{ $fmt['val']($m->Charging_Reverse_Watt,' W') }}</li>
+          </ul>
         @else
           <div class="placeholder">เลือกโทรศัพท์มือถือเพื่อเปรียบเทียบ</div>
         @endif

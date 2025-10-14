@@ -78,4 +78,16 @@ class CommentController extends Controller
             'hasMore'    => $hasMore,
         ]);
     }
+
+    public function destroy(Comment $comment)
+    {
+        $user = Auth::user();
+        if (!$user || (int)($user->RoleID) !== 1) {
+            abort(403);
+        }
+
+        $comment->delete();
+
+        return response()->noContent();
+    }
 }

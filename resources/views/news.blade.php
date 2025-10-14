@@ -33,11 +33,6 @@
 
   /* ===== Layout ===== */
   .layout{display:grid;grid-template-columns:220px 1fr;gap:16px;padding:16px}
-  .sidebar h3{margin-top:0}
-  .brand-list{list-style:none;margin:0;padding:0}
-  .brand-list li{margin:4px 0}
-  .brand-list a{color:#0f2342;text-decoration:none}
-  .brand-list a:hover{text-decoration:underline}
 
   .search-box{background:#fff;padding:12px;border-radius:12px;box-shadow:0 4px 12px rgba(15,35,66,.08);margin-bottom:16px}
   .search-box form{display:flex; gap:8px; align-items:center}
@@ -103,6 +98,51 @@
   }
   .btn-ghost:hover{filter:brightness(.97)}
 
+  /* ===== Brand panel (เหมือน home.blade) ===== */
+  .brand-panel{
+    background:#fff; border:1px solid #e5e7eb; border-radius:14px;
+    padding:12px; box-shadow:0 2px 10px rgba(15,35,66,.05);
+  }
+  .brand-panel__head{ font-weight:700; margin:0 0 10px; color:#0f2342 }
+
+  .brand-grid{
+    list-style:none; margin:0; padding:0;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:10px;
+  }
+  @media (max-width: 760px){
+    .brand-grid{ grid-template-columns:repeat(3,1fr); }
+  }
+  .brand-grid__item{ margin:0; padding:0 }
+
+  .brand-logo{
+    display:flex; align-items:center; justify-content:center;
+    height:64px; border-radius:12px;
+    background:#f8fafc; border:1px solid #e5e7eb;
+    text-decoration:none; overflow:hidden; padding:8px;
+    box-shadow:0 1px 3px rgba(15,35,66,.04) inset;
+  }
+  .brand-logo:hover{ filter:brightness(.98) }
+  .brand-logo.is-active{
+    background:#fff; border-color:#0f2342;
+    box-shadow:0 0 0 3px rgba(15,35,66,.12);
+  }
+
+  /* รูปต้องไม่ล้นและอยู่กลาง */
+  .brand-logo img{
+    display:block; width:100%; height:100%;
+    object-fit:contain;
+  }
+
+  .no-logo{
+    width:40px; height:40px; border-radius:50%;
+    display:grid; place-items:center;
+    background:#eef2f7; color:#0f2342; font-weight:700;
+  }
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
   @media (max-width:720px){ .filters-grid{grid-template-columns:1fr} }
   @media (max-width:680px){ .news-item{grid-template-columns:1fr}.news-thumb{height:180px;width:100%} }
   </style>
@@ -137,17 +177,37 @@
 
   <div class="layout">
     <aside class="sidebar">
-      <h3>แบรนด์</h3>
-      <ul class="brand-list">
-        @foreach($brands as $b)
-          <li>
-            <a href="{{ route('news', ['brand' => $b->ID]) }}"
-               style="{{ (string)request('brand')===(string)$b->ID ? 'font-weight:700;text-decoration:underline;' : '' }}">
-              {{ $b->Brand }}
-            </a>
-          </li>
-        @endforeach
-      </ul>
+      <div class="brand-panel">
+        <div class="brand-panel__head">แบรนด์</div>
+
+        <ul class="brand-grid">
+          @foreach($brands as $b)
+            @php
+              $active = (string)request('brand') === (string)$b->ID;
+              $qAll = request()->except('page'); // คงพารามิเตอร์อื่น ๆ
+
+              // คลิกซ้ำเพื่อล้าง brand
+              $href = $active
+                ? route('news', array_filter(array_merge($qAll, ['brand' => null])))
+                : route('news', array_merge($qAll, ['brand' => $b->ID]));
+            @endphp
+
+            <li class="brand-grid__item">
+              <a href="{{ $href }}"
+                 class="brand-logo {{ $active ? 'is-active' : '' }}"
+                 title="{{ $b->Brand }}"
+                 aria-pressed="{{ $active ? 'true' : 'false' }}">
+                @if($b->Logo_Path)
+                  <img src="{{ asset('storage/'.$b->Logo_Path) }}" alt="{{ $b->Brand }}" loading="lazy">
+                @else
+                  <span class="no-logo">{{ mb_substr($b->Brand,0,1) }}</span>
+                @endif
+                <span class="sr-only">{{ $b->Brand }}</span>
+              </a>
+            </li>
+          @endforeach
+        </ul>
+      </div>
     </aside>
 
     <main class="content">
@@ -268,13 +328,29 @@
             </article>
           </a>
         @empty
-          {{-- เดิม --}}
+          {{-- เว้นไว้ตามเดิม --}}
         @endforelse
       </div>
 
-      @if($items->total() > 0)
-        <div style="margin-top:16px">
-          {{ $items->onEachSide(1)->links() }}
+      @if(method_exists($items, 'hasPages') && $items->hasPages())
+        @php
+          $prev = $items->previousPageUrl();
+          $next = $items->nextPageUrl();
+        @endphp
+        <div style="margin:14px 0;display:flex;justify-content:center;align-items:center;gap:10px">
+          <a href="{{ $prev ?: '#' }}"
+             style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#0f2342;text-decoration:none;{{ $prev ? '' : 'pointer-events:none;opacity:.4' }}">
+             ก่อนหน้า
+          </a>
+
+          <span style="font-size:14px;color:#6b7280">
+            หน้า {{ $items->currentPage() }} / {{ $items->lastPage() }}
+          </span>
+
+          <a href="{{ $next ?: '#' }}"
+             style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#0f2342;text-decoration:none;{{ $next ? '' : 'pointer-events:none;opacity:.4' }}">
+             ถัดไป
+          </a>
         </div>
       @endif
     </main>

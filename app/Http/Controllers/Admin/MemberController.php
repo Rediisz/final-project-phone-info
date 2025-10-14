@@ -1,5 +1,5 @@
 <?php
-// app/Http/Controllers/Admin/MemberController.php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -27,7 +27,7 @@ class MemberController extends Controller
             'User_Name' => ['required','string','max:150'],
             'Email'     => ['nullable','email','unique:user,Email'],
             'Password'  => ['required','string','min:8'],
-            'RoleID'    => ['required','integer'], // 1=admin, 2=user 
+            'RoleID'    => ['required','integer'], // 1=admin, 2=user
             'Picture'   => ['nullable','image','mimes:jpg,jpeg,png,webp','max:4096'],
         ]);
 
@@ -39,12 +39,14 @@ class MemberController extends Controller
         ];
 
         if ($request->hasFile('Picture')) {
-            $data['Picture'] = $request->file('Picture')->store('avatars', 'public'); 
+            $data['Picture'] = $request->file('Picture')->store('avatars', 'public');
         }
 
         User::create($data);
 
-        return redirect()->route('admin.members.index')->with('success','เพิ่มสมาชิกเรียบร้อย');
+        return redirect()
+            ->route('admin.members.index')
+            ->with('ok','เพิ่มสมาชิกเรียบร้อยแล้ว');
     }
 
     public function edit(User $user)
@@ -54,14 +56,9 @@ class MemberController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $isSelf = $user->getKey() === auth()->id(); // แก้ตัวเองหรือไม่
+        // ถ้าจำเป็นต้องกัน “แก้ role ตัวเอง” ให้เทียบกับ guard แอดมิน
+        $isSelf = false; // ผู้ดูแลแก้ข้อมูลสมาชิกทั่วไปได้ตามปกติ
 
-        // ถ้าเป็นตัวเอง บังคับให้ RoleID กลับเป็นค่าปัจจุบัน (กันแก้สิทธิ์)
-        if ($isSelf) {
-            $request->merge(['RoleID' => $user->RoleID]);
-        }
-
-        // ถ้าเป็นตัวเองไม่ต้องตรวจ RoleID
         $rules = [
             'User_Name' => ['required','string','max:150'],
             'Email'     => ['nullable','email','unique:user,Email,'.$user->ID.',ID'],
@@ -76,7 +73,7 @@ class MemberController extends Controller
         $user->User_Name = $request->User_Name;
         $user->Email     = $request->Email;
 
-        if (!$isSelf) { // ไม่ให้แก้ role ของตัวเอง
+        if (!$isSelf) { // (กันไม่ให้แก้ role ตัวเอง ถ้าเปิดใช้)
             $user->RoleID = $request->RoleID;
         }
 
@@ -93,24 +90,26 @@ class MemberController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.members.index')->with('success','อัปเดตสมาชิกเรียบร้อย');
+        return redirect()
+            ->route('admin.members.index')
+            ->with('ok','อัปเดตสมาชิกเรียบร้อยแล้ว');
     }
-
 
     public function destroy(User $user)
     {
-        // Xลบตัวเอง
-        if ($user->getKey() === auth()->id()) {
-            return back()->with('error', 'ไม่สามารถลบบัญชีของตัวเองได้');
-        }
+        // ถ้าต้องการกัน “ลบตัวเอง” สำหรับสมาชิก ให้เปิดใช้ได้
+        // if ($user->getKey() === auth()->id()) {
+        //     return back()->with('error','ไม่สามารถลบบัญชีของตัวเองได้');
+        // }
 
-        // ลบรูปโปรไฟล์ถ้ามี
         if ($user->Picture && Storage::disk('public')->exists($user->Picture)) {
             Storage::disk('public')->delete($user->Picture);
         }
 
         $user->delete();
 
-        return redirect()->route('admin.members.index')->with('success', 'ลบผู้ใช้เรียบร้อย');
+        return redirect()
+            ->route('admin.members.index')
+            ->with('ok','ลบผู้ใช้เรียบร้อยแล้ว');
     }
 }

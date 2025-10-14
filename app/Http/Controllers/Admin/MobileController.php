@@ -20,7 +20,6 @@ class MobileController extends Controller
 
         $items = MobileInfo::with(['brand','firstImage'])
             ->when($q !== '', function ($s) use ($q) {
-                // ครอบด้วย where กลุ่มเดียว ป้องกัน orWhere หลุดขอบเขต
                 $s->where(function ($w) use ($q) {
                     $w->where('Model', 'like', "%{$q}%")
                       ->orWhereHas('brand', fn($b) => $b->where('Brand', 'like', "%{$q}%"));
@@ -45,10 +44,8 @@ class MobileController extends Controller
             $data = $request->validated();
             unset($data['cover'],$data['images']);
 
-            // insert mobile_info
             $m = MobileInfo::create($data);
 
-            // อัปcover
             if ($request->hasFile('cover')) {
                 $path = $request->file('cover')->store('mobiles','public');
                 MobileImg::create([
@@ -58,7 +55,6 @@ class MobileController extends Controller
                 ]);
             }
 
-            // อัปgallery
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $f) {
                     $path = $f->store('mobiles','public');
@@ -70,14 +66,15 @@ class MobileController extends Controller
                 }
             }
 
-            // ถ้าไม่มี cover เลย → ตั้งรูปแรกเป็นปก
             if (!$m->firstImage && $m->images()->exists()) {
                 $first = $m->images()->first();
                 $first->update(['IsCover' => 1]);
             }
         });
 
-        return redirect()->route('admin.phones.index')->with('success','เพิ่มข้อมูลมือถือเรียบร้อย');
+        return redirect()
+            ->route('admin.phones.index')
+            ->with('ok','เพิ่มข้อมูลมือถือเรียบร้อยแล้ว');
     }
 
     public function edit(MobileInfo $mobile)
@@ -99,7 +96,6 @@ class MobileController extends Controller
 
             $mobile->update($data);
 
-            // ลบรูป
             if ($ids = $request->input('remove_image_ids')) {
                 $imgs = MobileImg::where('Mobile_ID',$mobile->ID)->whereIn('ID',$ids)->get();
                 foreach ($imgs as $im) {
@@ -108,7 +104,6 @@ class MobileController extends Controller
                 }
             }
 
-            // ถ้ามี cover → เคลียร์ปกเก่าแล้วตั้งใหม่
             if ($request->hasFile('cover')) {
                 $path = $request->file('cover')->store('mobiles','public');
                 MobileImg::where('Mobile_ID',$mobile->ID)->update(['IsCover'=>0]);
@@ -119,7 +114,6 @@ class MobileController extends Controller
                 ]);
             }
 
-            // ถ้ามี gallery → เพิ่มอย่างเดียว
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $f) {
                     $path = $f->store('mobiles','public');
@@ -131,14 +125,15 @@ class MobileController extends Controller
                 }
             }
 
-            // safety: ถ้าไม่มีปกแล้ว แต่ยังมีรูปอยู่ → ตั้งรูปแรกเป็นปก
             if (!$mobile->firstImage && $mobile->images()->exists()) {
                 $first = $mobile->images()->first();
                 $first->update(['IsCover' => 1]);
             }
         });
 
-        return redirect()->route('admin.phones.index')->with('success','บันทึกการแก้ไขเรียบร้อย');
+        return redirect()
+            ->route('admin.phones.index')
+            ->with('ok','บันทึกการแก้ไขเรียบร้อยแล้ว');
     }
 
     public function destroy(MobileInfo $mobile)
@@ -156,12 +151,14 @@ class MobileController extends Controller
             $mobile->delete();
         });
 
-        return redirect()->route('admin.phones.index')->with('success','ลบข้อมูลแล้ว');
+        return redirect()
+            ->route('admin.phones.index')
+            ->with('ok','ลบข้อมูลเรียบร้อยแล้ว');
     }
-    
+
     public function show(MobileInfo $mobile)
     {
-        $mobile->load(['brand','images','coverImage']); // มีอะไรก็ใส่ความสัมพันธ์ไว้
+        $mobile->load(['brand','images','coverImage']);
         return view('mobile.show', compact('mobile'));
     }
 }
