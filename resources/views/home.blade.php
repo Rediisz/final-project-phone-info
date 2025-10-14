@@ -198,8 +198,8 @@
 
               // ถ้ากดซ้ำที่แบรนด์เดิม → ล้าง brand ออก
               $href = $active
-                ? route('news', array_filter(array_merge($qAll, ['brand' => null])))
-                : route('news', array_merge($qAll, ['brand' => $b->ID]));
+                ? route('home', array_filter(array_merge($qAll, ['brand' => null])))
+                : route('home', array_merge($qAll, ['brand' => $b->ID]));
             @endphp
 
             <li class="brand-grid__item">
