@@ -25,17 +25,53 @@
   const root = document.currentScript.previousElementSibling; // div.comment-item
   const btn  = root.querySelector('.btn-del-comment');
   if(!btn) return;
+
   btn.addEventListener('click', async () => {
-    if(!confirm('ยืนยันลบคอมเมนต์นี้?')) return;
-    const res = await fetch(btn.dataset.url, {
-      method: 'DELETE',
-      headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-        'Accept': 'application/json',
-      },
+    const result = await Swal.fire({
+      title: 'ยืนยันการลบ?',
+      text: 'คอมเมนต์นี้จะถูกลบถาวร',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'ลบ',
+      cancelButtonText: 'ยกเลิก',
+      reverseButtons: true,
+      confirmButtonColor: '#b91c1c'
     });
-    if(res.ok){ root.remove(); }
-    else{ alert('ลบไม่สำเร็จ'); }
+
+    if(!result.isConfirmed) return;
+
+    try {
+      const res = await fetch(btn.dataset.url, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}',
+          'Accept': 'application/json',
+        },
+      });
+
+      if (res.ok) {
+        await Swal.fire({
+          icon: 'success',
+          title: 'ลบสำเร็จ',
+          text: 'คอมเมนต์ถูกลบเรียบร้อยแล้ว',
+          confirmButtonText: 'ตกลง'
+        });
+        root.remove();
+      } else {
+        const t = await res.text().catch(()=> '');
+        Swal.fire({
+          icon: 'error',
+          title: 'ลบไม่สำเร็จ',
+          text: t || 'เกิดข้อผิดพลาดจากเซิร์ฟเวอร์'
+        });
+      }
+    } catch (e) {
+      Swal.fire({
+        icon: 'error',
+        title: 'ลบไม่สำเร็จ',
+        text: 'เครือข่ายขัดข้อง ลองใหม่อีกครั้ง'
+      });
+    }
   });
 })();
 </script>
