@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SmartSpec</title>
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
 
@@ -143,6 +144,10 @@
     overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
   }
 
+  /* Stack sidebar/content on small screens */
+  @media (max-width: 900px){ .layout{grid-template-columns:1fr} }
+  /* Tighter banner padding on phones */
+  @media (max-width: 600px){ .banner-wrap{padding:16px} }
   @media (max-width:720px){ .filters-grid{grid-template-columns:1fr} }
   @media (max-width:680px){ .news-item{grid-template-columns:1fr}.news-thumb{height:180px;width:100%} }
   </style>

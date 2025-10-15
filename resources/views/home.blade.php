@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SmartSpec</title>
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
 
@@ -151,6 +152,10 @@
   }
 
 
+  /* Stack layout on small screens */
+  @media (max-width: 900px){ .layout{grid-template-columns:1fr} }
+  /* Tighter banner padding on phones */
+  @media (max-width: 600px){ .banner-wrap{padding:16px} }
   @media (max-width: 720px){ .filters-grid{grid-template-columns:1fr} }
   </style>
 </head>

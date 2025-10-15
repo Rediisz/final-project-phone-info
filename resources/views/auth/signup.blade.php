@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8"><title>สมัครสมาชิก | SmartSpec</title>
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body{background:#f3f6fb;font-family:sans-serif;margin:0;color:#0f2342}
     header{background:#0f2342;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 24px}
@@ -25,9 +26,20 @@
     .btn-ghost{background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:8px 12px;cursor:pointer}
     .file-name{font-size:13px;color:#6b7280}
   </style>
+  <style>
+    .brand{margin:0;font-size:1.4rem}
+    .brand a{color:#fff;text-decoration:none}
+    .backhome{background:#fff;color:#0f2342;border:0;border-radius:10px;padding:8px 12px;font-weight:700;text-decoration:none}
+    .backhome:hover{filter:brightness(.95)}
+    input:focus{outline:3px solid rgba(15,35,66,.15);outline-offset:2px}
+    @media (max-width:560px){ .card{margin:24px 12px} .avatar-wrap{gap:10px} }
+  </style>
 </head>
 <body>
-<header></header>
+<header>
+  <h1 class="brand"><a href="{{ route('home') }}">SmartSpec</a></h1>
+  <a class="backhome" href="{{ route('home') }}">← กลับหน้าหลัก</a>
+</header>
 
 <div class="card">
   <h2 style="margin:0 0 12px">สมัครสมาชิก</h2>

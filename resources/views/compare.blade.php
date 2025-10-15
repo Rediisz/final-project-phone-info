@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>เปรียบเทียบมือถือ | SmartSpec</title>
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
   <style>
@@ -58,6 +59,8 @@
     @media (max-width:960px){
       .grid{grid-template-columns:1fr}
     }
+    /* Tighter banner padding on phones */
+    @media (max-width: 600px){ .banner-wrap{padding:16px} }
   </style>
 </head>
 <body style="margin:0;background:#f3f6fb;font-family:sans-serif;">
