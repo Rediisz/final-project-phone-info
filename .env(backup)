@@ -1,0 +1,49 @@
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=base64:WxoFbBy0dEkiI+To48cQ9X4bPHdrg8PwE7CTtW2MLxE=
+APP_DEBUG=true
+APP_URL=http://localhost/Final_Project/public
+
+# --- Google OAuth ---
+GOOGLE_CLIENT_ID=197504633483-61kcombfpriee3hs9uop5s9g9euijpqb.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+GOOGLE_REDIRECT_URI=http://localhost/Final_Project/public/admin/login/google/callback
+
+APP_LOCALE=en
+APP_FALLBACK_LOCALE=en
+APP_FAKER_LOCALE=en_US
+
+LOG_CHANNEL=stack
+LOG_LEVEL=debug
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=phone_info
+DB_USERNAME=root
+DB_PASSWORD=
+
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+
+FILESYSTEM_DISK=local
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync   # ให้ส่งเมลทันที ไม่ต้องรอคิว
+
+REDIS_CLIENT=phpredis
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+VITE_APP_NAME="${APP_NAME}"
+
+# --------- MAIL (Gmail + App Password) ----------
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=captain998899@gmail.com
+MAIL_PASSWORD="jsuy oaqo igts gtih"   # ถ้ามีช่องว่าง ให้ใส่ใน quotes
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=captain998899@gmail.com
+MAIL_FROM_NAME="SmartSpec"
+ 

@@ -62,7 +62,7 @@ class NewsPageController extends Controller
 
         $items = $query->orderByDesc('mobile_news.Date')
                        ->orderByDesc('mobile_news.ID')
-                       ->paginate(5)->onEachSide(1)->withQueryString();
+                       ->paginate(6)->onEachSide(1)->withQueryString();
 
         // ===== ข้อมูลประกอบฟอร์ม =====
         $banners = Banner::where('is_active',1)
