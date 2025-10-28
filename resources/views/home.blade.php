@@ -10,6 +10,7 @@
 
   <style>
   *{box-sizing:border-box}
+  html,body{overflow-x:hidden;max-width:100vw}
   body{background:#f3f6fb;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;margin:0;color:#0f2342;line-height:1.6}
   header{background:#0f2342;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 24px}
   header h1{margin:0;font-size:1.6rem;font-weight:700}
@@ -33,7 +34,7 @@
   .dot{width:8px;height:8px;border-radius:999px;border:none;cursor:pointer;background:#9da3af;opacity:.75}
   .dot.is-active{width:24px;background:#fff;opacity:1}
 
-  .layout{display:grid;grid-template-columns:220px 1fr;gap:16px;padding:16px}
+  .layout{display:grid;grid-template-columns:220px 1fr;gap:16px;padding:16px;max-width:100%;box-sizing:border-box}
   .sidebar h3{margin-top:0}
   .brand-list{list-style:none;margin:0;padding:0}
   .brand-list li{margin:4px 0}
@@ -163,6 +164,27 @@
   /* Tighter banner padding on phones */
   @media (max-width: 600px){ .banner-wrap{padding:16px} }
   @media (max-width: 720px){ .filters-grid{grid-template-columns:1fr} }
+  
+  /* Fix responsive overflow */
+  @media (max-width: 768px){
+    .mobile-grid{grid-template-columns:repeat(2,1fr)!important;gap:12px;padding:16px 0}
+    .mobile-card{min-height:auto;padding:12px}
+    .mobile-card img{height:120px}
+    .search-box{padding:12px}
+    .search-box form{flex-wrap:wrap;gap:8px}
+    .search-box input{min-width:0;flex:1 1 100%}
+    .search-box button,.btn-filter{flex:1 1 auto;min-width:100px}
+    .layout{padding:12px}
+  }
+  
+  /* Fix brand sidebar on mobile */
+  @media (max-width: 900px){
+    .brand-grid{grid-template-columns:repeat(3,1fr)!important}
+    .brand-panel{padding:10px}
+  }
+  
+  /* Prevent all overflow */
+  img{max-width:100%;height:auto}
   </style>
 </head>
 <body style="margin:0;background:#f3f6fb;font-family:sans-serif;">
