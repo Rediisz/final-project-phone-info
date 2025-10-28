@@ -5,6 +5,21 @@
     const results = document.getElementById('results');
     if(!sidebar || !results) return;
 
+    function buildHrefForBrand(id, isActive){
+      try{
+        const u = new URL(location.href);
+        // avoid carrying pagination across brand changes
+        u.searchParams.delete('page');
+        if(isActive){
+          u.searchParams.delete('brand');
+        } else {
+          if (id == null || id === '') u.searchParams.delete('brand');
+          else u.searchParams.set('brand', String(id));
+        }
+        return u.toString();
+      }catch(_){ return location.href; }
+    }
+
     function updateActiveFromURL(){
       try{
         const u = new URL(location.href);
@@ -14,6 +29,8 @@
           const isActive = brand && id && (String(id) === String(brand));
           a.classList.toggle('is-active', !!isActive);
           a.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          // keep hrefs in sync for toggle-on/off behavior
+          a.href = buildHrefForBrand(id, !!isActive);
         });
       }catch(_){/* ignore */}
     }
@@ -35,9 +52,7 @@
         }
         if (push) history.pushState({}, '', url);
         updateActiveFromURL();
-        // polite scroll
-        const y = results.getBoundingClientRect().top + window.scrollY - 12;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        // Keep viewport position stable; do not auto-scroll
       } catch (e){
         location.assign(url);
       } finally {
@@ -60,4 +75,3 @@
     document.addEventListener('DOMContentLoaded', init, { once:true });
   else init();
 })();
-
