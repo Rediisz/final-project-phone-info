@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>เปรียบเทียบมือถือ | SmartSpec</title>
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
+  <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
   <style>
   /* ===== โทนหลัก / Navbar ===== */
   body{background:#f3f6fb;font-family:sans-serif;margin:0;color:#0f2342}
@@ -92,7 +93,7 @@
 
   <div class="grid" id="cmpGrid" data-url="{{ route('compare') }}">
     @foreach([1,2,3] as $slot)
-      <div class="slot" data-slot="{{ $slot }}">
+      <div class="slot hover-lift" data-slot="{{ $slot }}">
         <div class="head">COMPARE WITH</div>
 
         {{-- Search box + dropdown --}}

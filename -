@@ -1,0 +1,70 @@
+
+      @php
+        $hasFilters = collect([
+          'q','brand','os','cpu',
+          'ram_min','ram_max','screen_min','screen_max',
+          'rear_mp_min','rear_mp_max','front_mp_min','front_mp_max',
+          'battery_min','battery_max','price_min','price_max',
+          'year_from','year_to','has5g'
+        ])->some(fn($k)=>request()->filled($k));
+      @endphp
+
+      <div class="mobile-grid">
+        @forelse($mobiles as $m)
+          @php
+            $imgPath = $m->coverImage?->Img ?? $m->images->first()?->Img ?? null;
+            $imgUrl  = $imgPath ? asset('storage/'.$imgPath) : asset('images/default.jpg');
+          @endphp
+          <a href="{{ route('mobile.show', $m->ID) }}" class="mobile-card-link">
+            <div class="mobile-card hover-lift">
+              <img src="{{ $imgUrl }}" alt="{{ $m->Model }}">
+              <h3>{{ $m->Model }}</h3>
+            </div>
+          </a>
+        @empty
+          <div class="empty-state">
+            <h3>ไม่พบผลลัพธ์</h3>
+            @if($hasFilters)
+              <p>ลองปรับตัวกรอง หรือเริ่มใหม่ด้วยการล้างตัวกรอง</p>
+              <a href="{{ route('home') }}" class="btn-ghost">ล้างตัวกรอง</a>
+            @else
+              <p>ยังไม่มีข้อมูลมือถือในระบบ</p>
+            @endif
+          </div>
+        @endforelse
+      </div>
+
+      @if(method_exists($mobiles, 'hasPages') && $mobiles->hasPages())
+        @php
+          $prev = $mobiles->previousPageUrl();
+          $next = $mobiles->nextPageUrl();
+        @endphp
+        <div style="margin:24px 0;display:flex;justify-content:center;align-items:center;gap:12px">
+          <a href="{{ $prev ?: '#' }}" style="padding:10px 16px;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#0f2342;text-decoration:none;font-weight:500;transition:all .2s ease;{{ $prev ? '' : 'pointer-events:none;opacity:.4' }}{{ $prev ? ';cursor:pointer' : '' }}">{{ $prev ? '‹ ก่อนหน้า' : 'ก่อนหน้า' }}</a>
+          @if(method_exists($mobiles,'currentPage'))
+            <span style="font-size:15px;color:#64748b;font-weight:500;padding:0 8px">หน้า {{ $mobiles->currentPage() }} @if(method_exists($mobiles,'lastPage')) / {{ $mobiles->lastPage() }} @endif</span>
+          @endif
+          <a href="{{ $next ?: '#' }}" style="padding:10px 16px;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#0f2342;text-decoration:none;font-weight:500;transition:all .2s ease;{{ $next ? '' : 'pointer-events:none;opacity:.4' }}{{ $next ? ';cursor:pointer' : '' }}">{{ $next ? 'ถัดไป ›' : 'ถัดไป' }}</a>
+        </div>
+      @endif
+    </main>
+  </div>
+
+  <script>
+  /* Carousel (robust) */
+  (function(){
+    const wrap = document.querySelector('.banner-wrap'); if(!wrap) return;
+    const carousel = wrap.querySelector('.carousel');
+    const track = wrap.querySelector('.track');
+    const prevBtn = wrap.querySelector('.prev');
+    const nextBtn = wrap.querySelector('.next');
+    const dots = Array.from(wrap.querySelectorAll('.dot'));
+
+    const realSlides = Array.from(track.children);
+    if (realSlides.length <= 1) { prevBtn?.setAttribute('disabled','true'); nextBtn?.setAttribute('disabled','true'); return; }
+
+    const head = realSlides[0].cloneNode(true);
+    const tail = realSlides[realSlides.length - 1].cloneNode(true);
+    track.insertBefore(tail, realSlides[0]);
+    track.appendChild(head);
+

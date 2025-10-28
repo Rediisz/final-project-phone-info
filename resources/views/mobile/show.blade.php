@@ -6,6 +6,7 @@
   <title>{{ $mobile->FullName ?? $mobile->Model }} | SmartSpec</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
+  <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
 
   <style>
     :root{

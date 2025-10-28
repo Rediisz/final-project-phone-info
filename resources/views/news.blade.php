@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SmartSpec</title>
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
+  <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+  <script src="{{ asset('js/brand-ajax.js') }}" defer></script>
 
   <style>
   /* ===== Base / Navbar ===== */
@@ -200,6 +202,7 @@
             <li class="brand-grid__item">
               <a href="{{ $href }}"
                  class="brand-logo {{ $active ? 'is-active' : '' }}"
+                 data-brand-id="{{ $b->ID }}"
                  title="{{ $b->Brand }}"
                  aria-pressed="{{ $active ? 'true' : 'false' }}">
                 @if($b->Logo_Path)
@@ -308,6 +311,7 @@
         ])->some(fn($k)=>request()->filled($k));
       @endphp
 
+      <div id="results">
       <div class="news-list">
         @forelse($items as $n)
           @php
@@ -317,7 +321,7 @@
           @endphp
 
           <a href="{{ route('news.show', $n->ID) }}" class="news-card-link">
-            <article class="news-item">
+            <article class="news-item hover-lift">
               <div class="news-thumb">
                 <img src="{{ $imgUrl }}" alt="{{ $n->Title }}">
               </div>
@@ -336,6 +340,7 @@
           {{-- เว้นไว้ตามเดิม --}}
         @endforelse
       </div>
+      </div><!-- /#results -->
 
       @if(method_exists($items, 'hasPages') && $items->hasPages())
         @php

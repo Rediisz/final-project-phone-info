@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SmartSpec</title>
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
+  <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+  <script src="{{ asset('js/brand-ajax.js') }}" defer></script>
 
   <style>
   *{box-sizing:border-box}
@@ -214,6 +216,7 @@
             <li class="brand-grid__item">
               <a href="{{ $href }}"
                 class="brand-logo {{ $active ? 'is-active' : '' }}"
+                data-brand-id="{{ $b->ID }}"
                 title="{{ $b->Brand }}"
                 aria-pressed="{{ $active ? 'true' : 'false' }}">
                 @if($b->Logo_Path)
@@ -395,6 +398,7 @@
         ])->some(fn($k)=>request()->filled($k));
       @endphp
 
+      <div id="results">
       <div class="mobile-grid">
         @forelse($mobiles as $m)
           @php
@@ -402,7 +406,7 @@
             $imgUrl  = $imgPath ? asset('storage/'.$imgPath) : asset('images/default.jpg');
           @endphp
           <a href="{{ route('mobile.show', $m->ID) }}" class="mobile-card-link">
-            <div class="mobile-card">
+            <div class="mobile-card hover-lift">
               <img src="{{ $imgUrl }}" alt="{{ $m->Model }}">
               <h3>{{ $m->Model }}</h3>
             </div>
@@ -419,6 +423,7 @@
           </div>
         @endforelse
       </div>
+      </div><!-- /#results -->
 
       @if(method_exists($mobiles, 'hasPages') && $mobiles->hasPages())
         @php

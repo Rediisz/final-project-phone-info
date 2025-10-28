@@ -5,6 +5,7 @@
   <title>{{ $news->Title }} | SmartSpec</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
+  <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
   <style>
    *{box-sizing:border-box}
    body{background:#f3f6fb;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;margin:0;color:#0f2342;line-height:1.6}
