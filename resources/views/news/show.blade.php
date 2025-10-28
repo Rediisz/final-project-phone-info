@@ -6,40 +6,42 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
   <style>
-   body{background:#f3f6fb;font-family:sans-serif;margin:0;color:#0f2342}
+   *{box-sizing:border-box}
+   body{background:#f3f6fb;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;margin:0;color:#0f2342;line-height:1.6}
   /* อย่าเขียน header{} ในหน้านี้ เพื่อไม่ให้ทับ layouts.navbar */
-   /* ให้เหมือน mobile/show */
-    header h1{ margin:0; font-size:1.6rem; }
-    header nav a{ color:#fff; margin-left:14px; text-decoration:none; }
-    header nav a:hover{ text-decoration:underline; } 
-    /* ให้กว้างเท่าหน้า mobile/home */
-  .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
+    header h1{ margin:0; font-size:1.6rem; font-weight:700; }
+    header nav a{ color:#fff; margin-left:14px; text-decoration:none; transition:opacity .2s ease; }
+    header nav a:hover{ text-decoration:underline; opacity:.85; } 
+  .wrap{max-width:900px;margin:32px auto;padding:0 20px}
 
-  .crumb{font-size:.9rem;color:#64748b;margin-bottom:10px}
-  .crumb a{color:#0f2342;text-decoration:none}
-  .crumb a:hover{text-decoration:underline}
+  .crumb{font-size:.95rem;color:#64748b;margin-bottom:12px}
+  .crumb a{color:#0f2342;text-decoration:none;transition:color .2s ease}
+  .crumb a:hover{text-decoration:underline;color:#0f2342}
 
-  .title{margin:6px 0 4px 0}
+  .title{margin:8px 0 12px 0;font-size:2rem;font-weight:700;line-height:1.3;color:#0f2342}
   .meta{color:#64748b;font-size:.95rem}
-  .pill{display:inline-block;background:#0f2342;color:#fff;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:700}
+  .pill{display:inline-block;background:#0f2342;color:#fff;border-radius:999px;padding:4px 12px;font-size:.8rem;font-weight:600;margin-right:6px}
 
-  .card{background:#fff;border-radius:16px;box-shadow:0 4px 12px rgba(15,35,66,.08);overflow:hidden}
-  .hero{width:100%;aspect-ratio:16/9;background:#eef3f9;display:flex;align-items:center;justify-content:center}
-  .hero img{width:100%;height:100%;object-fit:cover}
+  .card{background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(15,35,66,.06);overflow:hidden;border:1px solid #e8eef5}
+  .hero{width:100%;aspect-ratio:16/9;background:#eef3f9;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .hero img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+  .hero:hover img{transform:scale(1.02)}
 
-  .content{padding:18px 20px;line-height:1.9;font-size:1.05rem}
-  .gallery{display:flex;gap:10px;flex-wrap:wrap;padding:14px 0 2px}
-  .gallery img{width:180px;height:120px;object-fit:cover;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+  .content{padding:28px 32px;line-height:1.8;font-size:1.05rem;color:#374151}
+  .content strong{color:#0f2342;font-weight:600}
+  .gallery{display:flex;gap:12px;flex-wrap:wrap;padding:20px 0 0}
+  .gallery img{width:180px;height:120px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:transform .2s ease;cursor:pointer}
+  .gallery img:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.15)}
 
-  .meta-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
-  .sep{opacity:.4}
-  body > header{
-  all: revert-layer;                 /* ยกเลิกผลกระทบจากสไตล์ก่อนหน้า ถ้าเบราว์เซอร์รองรับ */
-  background:#0f2342; color:#fff;
-  display:flex; justify-content:space-between; align-items:center;
-  padding:12px 24px; width:100%; box-sizing:border-box;
-    }
-    body > header nav{ display:flex; align-items:center; gap:12px; }
+  .meta-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .sep{opacity:.4;color:#64748b}
+
+  @media (max-width:768px){
+    .title{font-size:1.5rem}
+    .wrap{padding:0 16px;margin:20px auto}
+    .content{padding:20px}
+    .gallery img{width:calc(50% - 6px)}
+  }
   </style>
 </head>
 <body>

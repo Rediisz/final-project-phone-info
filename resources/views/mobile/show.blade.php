@@ -16,21 +16,21 @@
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
     a{color:var(--ink)}
-    .page{max-width:1180px;margin:20px auto;padding:0 16px}
-    .crumb{color:var(--muted);margin:8px 0 16px;font-size:.95rem}
-    .crumb a{text-decoration:none}
-    .crumb a:hover{text-decoration:underline}
+    .page{max-width:1200px;margin:32px auto;padding:0 20px}
+    .crumb{color:var(--muted);margin:8px 0 20px;font-size:.95rem}
+    .crumb a{text-decoration:none;transition:color .2s ease}
+    .crumb a:hover{text-decoration:underline;color:var(--ink)}
 
     /* Header grid: left image / right summary */
-    .head{display:grid;grid-template-columns:420px 1fr;gap:24px}
-    @media(max-width:980px){.head{grid-template-columns:1fr}}
+    .head{display:grid;grid-template-columns:450px 1fr;gap:32px;margin-bottom:24px}
+    @media(max-width:980px){.head{grid-template-columns:1fr;gap:24px}}
 
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .card .bd{padding:18px 20px}
+    .card{background:var(--card);border-radius:18px;box-shadow:0 4px 16px rgba(15,35,66,.08);border:1px solid #e8eef5}
+    .card .bd{padding:24px}
 
-    .hero{aspect-ratio:1/1;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .hero img{max-width:100%;max-height:100%;object-fit:contain;transition:transform .25s ease}
-    .hero:hover img{transform:scale(1.03)}
+    .hero{aspect-ratio:1/1;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    .hero img{max-width:100%;max-height:100%;object-fit:contain;transition:transform .3s ease}
+    .hero:hover img{transform:scale(1.05)}
 
     /* thumbs */
     .thumbs-wrap{position:relative;margin-top:12px}
@@ -46,24 +46,28 @@
     .t-left{left:0;background:linear-gradient(90deg,#fff,rgba(255,255,255,0))}
     .t-right{right:0;background:linear-gradient(270deg,#fff,rgba(255,255,255,0))}
 
-    .title{margin:0;font-size:1.75rem;line-height:1.25}
-    .meta{color:var(--muted);margin-top:6px}
-    .chip{display:inline-block;background:var(--chip);color:#fff;border-radius:999px;padding:2px 10px;font-size:.78rem;margin-left:8px}
+    .title{margin:0;font-size:2rem;line-height:1.3;font-weight:700;color:var(--ink)}
+    .meta{color:var(--muted);margin-top:8px;font-size:.95rem}
+    .chip{display:inline-block;background:var(--chip);color:#fff;border-radius:999px;padding:4px 12px;font-size:.8rem;margin-left:8px;font-weight:600}
 
     /* highlight grid */
-    .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
     @media(max-width:520px){.kpis{grid-template-columns:1fr}}
-    .kpis div{background:#f8fbff;border:1px solid var(--line);padding:10px 12px;border-radius:12px}
-    .kpis b{font-weight:700}
+    .kpis div{background:#f8fbff;border:1px solid var(--line);padding:14px 16px;border-radius:14px;transition:all .2s ease}
+    .kpis div:hover{background:#f0f7ff;border-color:#cbd5e1;transform:translateY(-1px)}
+    .kpis b{font-weight:700;color:var(--ink)}
 
     /* spec sections 2-column balanced */
-    .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+    .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px}
     @media(max-width:920px){.spec-grid{grid-template-columns:1fr}}
-    .sec{border-radius:16px;background:#fff;box-shadow:var(--shadow)}
-    .sec h3{margin:0;padding:12px 16px;border-bottom:1px solid var(--line);font-size:1.05rem}
+    .sec{border-radius:18px;background:#fff;box-shadow:0 4px 16px rgba(15,35,66,.08);border:1px solid #e8eef5;overflow:hidden;transition:box-shadow .2s ease}
+    .sec:hover{box-shadow:0 6px 20px rgba(15,35,66,.12)}
+    .sec h3{margin:0;padding:16px 20px;border-bottom:1px solid var(--line);font-size:1.1rem;font-weight:700;background:#f8fbff;color:var(--ink)}
     .spec{width:100%;border-collapse:collapse}
-    .spec th,.spec td{padding:10px 14px;border-bottom:1px solid #f1f5fa;vertical-align:top}
+    .spec th,.spec td{padding:12px 18px;border-bottom:1px solid #f1f5fa;vertical-align:top}
     .spec th{width:36%;font-weight:600;color:#385072;background:#fbfdff}
+    .spec td{color:#374151}
+    .spec tr:hover td{background:#fafcff}
     .spec tr:last-child th,.spec tr:last-child td{border-bottom:0}
   </style>
 </head>

@@ -1,7 +1,7 @@
 @props(['model','type'])
 
-<section id="comments" style="margin-top:28px;background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 8px rgba(15,35,66,.06)">
-  <h3 style="margin:0 0 12px;font-size:18px;color:#0f2342;">คอมเมนต์</h3>
+<section id="comments" style="margin-top:32px;background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(15,35,66,.06);border:1px solid #e8eef5">
+  <h3 style="margin:0 0 16px;font-size:20px;color:#0f2342;font-weight:700;">💬 คอมเมนต์</h3>
 
   <div id="comment-list">
     @forelse($model->comments()->with('user')->orderByDesc('Date')->get() as $comment)
@@ -16,9 +16,9 @@
       <form id="comment-form">
         @csrf  {{-- <<<<<< ใส่ token แบบฟอร์ม --}}
         <textarea name="body" rows="3" placeholder="พิมพ์ความคิดเห็น..." required
-          style="width:100%;border:1px solid #dbe3f0;border-radius:12px;padding:10px;resize:vertical;"></textarea>
-        <div style="display:flex;justify-content:flex-end;margin-top:8px">
-          <button type="submit" style="background:#0f2342;color:#fff;border:none;border-radius:10px;padding:8px 14px;cursor:pointer;">
+          style="width:100%;border:1px solid #dbe3f0;border-radius:12px;padding:12px;resize:vertical;font-family:inherit;font-size:14px;transition:border-color .2s ease,box-shadow .2s ease"></textarea>
+        <div style="display:flex;justify-content:flex-end;margin-top:12px">
+          <button type="submit" style="background:#0f2342;color:#fff;border:none;border-radius:10px;padding:10px 20px;cursor:pointer;font-weight:600;transition:all .2s ease;font-size:14px">
             ส่งคอมเมนต์
           </button>
         </div>

@@ -5,34 +5,41 @@
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body{background:#f3f6fb;font-family:sans-serif;margin:0;color:#0f2342}
-    header{background:#0f2342;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 24px}
-    .card{max-width:520px;margin:40px auto;background:#fff;border-radius:14px;box-shadow:0 10px 24px rgba(15,35,66,.12);padding:18px}
-    .row{display:flex;flex-direction:column;margin-bottom:12px}
-    label{font-size:13px;margin-bottom:6px}
-    input[type=text],input[type=email],input[type=password]{padding:10px 12px;border:1px solid #d1d5db;border-radius:10px}
-    .btn{background:#0f2342;color:#fff;border:0;border-radius:10px;padding:10px 14px;cursor:pointer;width:100%}
-    .muted{color:#6b7280;font-size:13px;margin-top:10px;text-align:center}
-    .err{color:#b91c1c;font-size:13px;margin-top:4px}
+    *{box-sizing:border-box}
+    body{background:#f3f6fb;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;margin:0;color:#0f2342;line-height:1.6}
+    header{background:#0f2342;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    .card{max-width:580px;margin:50px auto;background:#fff;border-radius:18px;box-shadow:0 8px 32px rgba(15,35,66,.1);padding:32px;border:1px solid #e8eef5}
+    .card h2{margin:0 0 24px;font-size:1.75rem;font-weight:700;color:#0f2342}
+    .row{display:flex;flex-direction:column;margin-bottom:18px}
+    label{font-size:14px;font-weight:600;margin-bottom:8px;color:#374151}
+    input[type=text],input[type=email],input[type=password]{padding:12px 16px;border:1px solid #d1d5db;border-radius:12px;font-size:14px;font-family:inherit;transition:all .2s ease;background:#fff}
+    input[type=text]:focus,input[type=email]:focus,input[type=password]:focus{outline:none;border-color:#0f2342;box-shadow:0 0 0 3px rgba(15,35,66,.08)}
+    .btn{background:#0f2342;color:#fff;border:0;border-radius:12px;padding:12px 18px;cursor:pointer;width:100%;font-weight:600;font-size:15px;transition:all .2s ease;margin-top:8px}
+    .btn:hover{background:#0a1a2e;transform:translateY(-1px);box-shadow:0 4px 12px rgba(15,35,66,.15)}
+    .btn:active{transform:translateY(0)}
+    .muted{color:#6b7280;font-size:14px;margin-top:20px;text-align:center}
+    .muted a{color:#0f2342;text-decoration:none;font-weight:500}
+    .muted a:hover{text-decoration:underline}
+    .err{color:#b91c1c;font-size:13px;margin-top:6px;font-weight:500}
 
     /* พรีวิวรูป */
-    .avatar-wrap{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+    .avatar-wrap{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
     .avatar-box{
-      width:220px;height:220px;border:1px solid #e5e7eb;border-radius:12px;
+      width:220px;height:220px;border:2px solid #e5e7eb;border-radius:16px;
       display:flex;align-items:center;justify-content:center;overflow:hidden;background:#f9fafb;
+      transition:border-color .2s ease,box-shadow .2s ease
     }
+    .avatar-box:hover{border-color:#0f2342;box-shadow:0 4px 12px rgba(15,35,66,.1)}
     .avatar-box img{max-width:100%;max-height:100%;object-fit:cover}
-    .avatar-actions{display:flex;align-items:center;gap:10px}
-    .btn-ghost{background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:8px 12px;cursor:pointer}
-    .file-name{font-size:13px;color:#6b7280}
-  </style>
-  <style>
-    .brand{margin:0;font-size:1.4rem}
+    .avatar-actions{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .btn-ghost{background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:10px 16px;cursor:pointer;font-weight:500;transition:all .2s ease;font-size:14px}
+    .btn-ghost:hover{background:#f9fafb;border-color:#0f2342;transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    .file-name{font-size:13px;color:#6b7280;font-weight:500}
+    .brand{margin:0;font-size:1.5rem;font-weight:700}
     .brand a{color:#fff;text-decoration:none}
-    .backhome{background:#fff;color:#0f2342;border:0;border-radius:10px;padding:8px 12px;font-weight:700;text-decoration:none}
-    .backhome:hover{filter:brightness(.95)}
-    input:focus{outline:3px solid rgba(15,35,66,.15);outline-offset:2px}
-    @media (max-width:560px){ .card{margin:24px 12px} .avatar-wrap{gap:10px} }
+    .backhome{background:#fff;color:#0f2342;border:0;border-radius:10px;padding:10px 16px;font-weight:600;text-decoration:none;transition:all .2s ease;font-size:14px}
+    .backhome:hover{background:#f9fafb;transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    @media (max-width:560px){ .card{margin:30px 16px;padding:24px} .avatar-wrap{gap:12px} .avatar-box{width:180px;height:180px} }
   </style>
 </head>
 <body>

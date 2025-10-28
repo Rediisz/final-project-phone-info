@@ -1,17 +1,17 @@
 @php($u = $comment->user)
-<div class="comment-item" data-id="{{ $comment->ID }}" style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #e8eef5">
+<div class="comment-item" data-id="{{ $comment->ID }}" style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #e8eef5;transition:background-color .2s ease;border-radius:8px;margin-bottom:4px">
   <img src="{{ $u?->avatar_url }}" alt="{{ e($u->User_Name ?? 'user') }}"
-       style="width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:center;background:#cfd8e3">
+       style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:center;background:#cfd8e3;flex-shrink:0;border:2px solid #e8eef5">
   <div style="flex:1">
-    <div style="font-size:14px;color:#0f2342;font-weight:600">{{ $u->User_Name ?? 'สมาชิก' }}</div>
-    <div style="white-space:pre-wrap;line-height:1.5">{{ e($comment->Comment) }}</div>
-    <div style="font-size:12px;color:#6b7280;margin-top:4px">{{ $comment->Date?->diffForHumans() }}</div>
+    <div style="font-size:15px;color:#0f2342;font-weight:600;margin-bottom:4px">{{ $u->User_Name ?? 'สมาชิก' }}</div>
+    <div style="white-space:pre-wrap;line-height:1.6;color:#374151;font-size:14px">{{ e($comment->Comment) }}</div>
+    <div style="font-size:12px;color:#9ca3af;margin-top:6px">{{ $comment->Date?->diffForHumans() }}</div>
   </div>
   @auth
     @if(auth()->user()->RoleID == 1)
       <div>
         <button class="btn-del-comment" data-url="{{ route('comments.destroy',$comment->ID) }}"
-          style="background:transparent;color:#b91c1c;border:1px solid #b91c1c;border-radius:8px;padding:6px 10px;cursor:pointer">
+          style="background:transparent;color:#b91c1c;border:1px solid #b91c1c;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;transition:all .2s ease;font-weight:500">
           ลบ
         </button>
       </div>

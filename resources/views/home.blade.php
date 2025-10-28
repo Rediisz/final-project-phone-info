@@ -7,11 +7,12 @@
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
 
   <style>
-  body{background:#f3f6fb;font-family:sans-serif;margin:0;color:#0f2342}
+  *{box-sizing:border-box}
+  body{background:#f3f6fb;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;margin:0;color:#0f2342;line-height:1.6}
   header{background:#0f2342;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 24px}
-  header h1{margin:0;font-size:1.6rem}
-  header nav a{color:#fff;margin-left:14px;text-decoration:none}
-  header nav a:hover{text-decoration:underline}
+  header h1{margin:0;font-size:1.6rem;font-weight:700}
+  header nav a{color:#fff;margin-left:14px;text-decoration:none;transition:opacity .2s ease}
+  header nav a:hover{text-decoration:underline;opacity:.85}
 
   .banner-wrap{background:#2f3236;position:relative;padding:22px 64px 30px}
   .banner-empty{background:#2f3236;min-height:260px}
@@ -37,20 +38,23 @@
   .brand-list a{color:#0f2342;text-decoration:none}
   .brand-list a:hover{text-decoration:underline}
 
-  .search-box{background:#fff;padding:12px;border-radius:12px;box-shadow:0 4px 12px rgba(15,35,66,.08);margin-bottom:16px}
-  .search-box form{display:flex; gap:8px; align-items:center}
-  .search-box input{flex:1;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box}
-  .search-box button{padding:10px 14px;border:0;border-radius:8px;background:#0f2342;color:#fff;font-weight:600;cursor:pointer}
-  .search-box button:hover{filter:brightness(.95)}
+  .search-box{background:#fff;padding:16px;border-radius:16px;box-shadow:0 2px 8px rgba(15,35,66,.06);margin-bottom:20px;border:1px solid #e8eef5}
+  .search-box form{display:flex; gap:10px; align-items:center}
+  .search-box input{flex:1;padding:12px 16px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;font-family:inherit;transition:border-color .2s ease,box-shadow .2s ease}
+  .search-box input:focus{outline:none;border-color:#0f2342;box-shadow:0 0 0 3px rgba(15,35,66,.08)}
+  .search-box button{padding:12px 20px;border:0;border-radius:10px;background:#0f2342;color:#fff;font-weight:600;cursor:pointer;transition:all .2s ease;font-size:14px}
+  .search-box button:hover{background:#0a1a2e;transform:translateY(-1px);box-shadow:0 4px 12px rgba(15,35,66,.15)}
+  .search-box button:active{transform:translateY(0)}
 
-  .mobile-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:16px;padding:20px 0}
-  @media (max-width: 1200px){ .mobile-grid{grid-template-columns:repeat(4,1fr)} }
-  @media (max-width: 720px){  .mobile-grid{grid-template-columns:repeat(2,1fr)} }
-  .mobile-card{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(15,35,66,.08);text-align:center;padding:10px;min-height:200px;transition:transform .15s}
-  .mobile-card:hover{transform:translateY(-2px)}
-  .mobile-card img{max-width:100%;height:160px;object-fit:contain;margin-bottom:8px}
-  .mobile-card h3{font-size:14px;margin:0}
-  .mobile-card-link{display:block;text-decoration:none;color:inherit;border-radius:12px}
+  .mobile-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:20px;padding:24px 0}
+  @media (max-width: 1200px){ .mobile-grid{grid-template-columns:repeat(4,1fr);gap:16px} }
+  @media (max-width: 720px){  .mobile-grid{grid-template-columns:repeat(2,1fr);gap:12px} }
+  .mobile-card{background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(15,35,66,.08);text-align:center;padding:16px;min-height:220px;transition:all .25s ease;border:1px solid transparent}
+  .mobile-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(15,35,66,.12);border-color:#e8eef5}
+  .mobile-card img{max-width:100%;height:140px;object-fit:contain;margin-bottom:12px;transition:transform .25s ease}
+  .mobile-card:hover img{transform:scale(1.05)}
+  .mobile-card h3{font-size:14px;margin:0;font-weight:600;color:#0f2342;line-height:1.4}
+  .mobile-card-link{display:block;text-decoration:none;color:inherit;border-radius:16px}
   .mobile-card-link:focus-visible{outline:3px solid #0f2342;outline-offset:2px}
 
   /* empty-state (ใหม่) */
@@ -67,8 +71,8 @@
   }
   .empty-state .btn-ghost:hover{filter:brightness(.97)}
 
-  .btn-filter{padding:10px 12px;border:0;border-radius:8px;background:#fff;color:#0f2342;font-weight:600;cursor:pointer;box-shadow:0 0 0 1px #d1d5db inset}
-  .btn-filter:hover{filter:brightness(.97)}
+  .btn-filter{padding:12px 16px;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#0f2342;font-weight:600;cursor:pointer;transition:all .2s ease;font-size:14px}
+  .btn-filter:hover{background:#f9fafb;border-color:#0f2342;transform:translateY(-1px);box-shadow:0 2px 8px rgba(15,35,66,.1)}
 
   .modal{position:fixed;inset:0;display:none;z-index:50}
   .modal[aria-hidden="false"]{display:block}
@@ -421,12 +425,12 @@
           $prev = $mobiles->previousPageUrl();
           $next = $mobiles->nextPageUrl();
         @endphp
-        <div style="margin:14px 0;display:flex;justify-content:center;align-items:center;gap:10px">
-          <a href="{{ $prev ?: '#' }}" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#0f2342;text-decoration:none;{{ $prev ? '' : 'pointer-events:none;opacity:.4' }}">ก่อนหน้า</a>
+        <div style="margin:24px 0;display:flex;justify-content:center;align-items:center;gap:12px">
+          <a href="{{ $prev ?: '#' }}" style="padding:10px 16px;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#0f2342;text-decoration:none;font-weight:500;transition:all .2s ease;{{ $prev ? '' : 'pointer-events:none;opacity:.4' }}{{ $prev ? ';cursor:pointer' : '' }}">{{ $prev ? '‹ ก่อนหน้า' : 'ก่อนหน้า' }}</a>
           @if(method_exists($mobiles,'currentPage'))
-            <span style="font-size:14px;color:#6b7280">หน้า {{ $mobiles->currentPage() }} @if(method_exists($mobiles,'lastPage')) / {{ $mobiles->lastPage() }} @endif</span>
+            <span style="font-size:15px;color:#64748b;font-weight:500;padding:0 8px">หน้า {{ $mobiles->currentPage() }} @if(method_exists($mobiles,'lastPage')) / {{ $mobiles->lastPage() }} @endif</span>
           @endif
-          <a href="{{ $next ?: '#' }}" style="padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#0f2342;text-decoration:none;{{ $next ? '' : 'pointer-events:none;opacity:.4' }}">ถัดไป</a>
+          <a href="{{ $next ?: '#' }}" style="padding:10px 16px;border:1px solid #d1d5db;border-radius:10px;background:#fff;color:#0f2342;text-decoration:none;font-weight:500;transition:all .2s ease;{{ $next ? '' : 'pointer-events:none;opacity:.4' }}{{ $next ? ';cursor:pointer' : '' }}">{{ $next ? 'ถัดไป ›' : 'ถัดไป' }}</a>
         </div>
       @endif
     </main>
