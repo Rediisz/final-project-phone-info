@@ -5,44 +5,132 @@
   <title>{{ $news->Title }} | SmartSpec</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href="{{ asset('images/icon.png') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
    *{box-sizing:border-box}
-   body{background:#f3f6fb;font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;margin:0;color:#0f2342;line-height:1.6}
-  /* อย่าเขียน header{} ในหน้านี้ เพื่อไม่ให้ทับ layouts.navbar */
-    header h1{ margin:0; font-size:1.6rem; font-weight:700; }
-    header nav a{ color:#fff; margin-left:14px; text-decoration:none; transition:opacity .2s ease; }
-    header nav a:hover{ text-decoration:underline; opacity:.85; } 
-  .wrap{max-width:900px;margin:32px auto;padding:0 20px}
+   body{
+      background:#f3f6fb;
+      font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+      margin:0;
+      color:#0f2342;
+      line-height:1.6
+   }
 
-  .crumb{font-size:.95rem;color:#64748b;margin-bottom:12px}
-  .crumb a{color:#0f2342;text-decoration:none;transition:color .2s ease}
-  .crumb a:hover{text-decoration:underline;color:#0f2342}
+   /* ทำให้ navbar sticky เหมือนหน้าอื่น */
+   .site-header{
+      position:sticky;
+      top:0;
+      z-index:100;
+   }
 
-  .title{margin:8px 0 12px 0;font-size:2rem;font-weight:700;line-height:1.3;color:#0f2342}
-  .meta{color:#64748b;font-size:.95rem}
-  .pill{display:inline-block;background:#0f2342;color:#fff;border-radius:999px;padding:4px 12px;font-size:.8rem;font-weight:600;margin-right:6px}
+   /* ✅ ไม่ใช้ header h1/nav a ตรง ๆ เพื่อไม่ทับ layouts.navbar */
+   .site-header .site-title{
+      margin:0;
+      font-size:1.6rem;
+      font-weight:700;
+   }
+   .site-header .site-nav a{
+      color:#fff;
+      margin-left:14px;
+      text-decoration:none;
+      transition:opacity .2s ease;
+   }
+   .site-header .site-nav a:hover{
+      text-decoration:none;
+      opacity:.85;
+   }
 
-  .card{background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(15,35,66,.06);overflow:hidden;border:1px solid #e8eef5}
-  .hero{width:100%;aspect-ratio:16/9;background:#eef3f9;display:flex;align-items:center;justify-content:center;overflow:hidden}
-  .hero img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
-  .hero:hover img{transform:scale(1.02)}
+   .wrap{max-width:900px;margin:32px auto;padding:0 20px}
 
-  .content{padding:28px 32px;line-height:1.8;font-size:1.05rem;color:#374151}
-  .content strong{color:#0f2342;font-weight:600}
-  .gallery{display:flex;gap:12px;flex-wrap:wrap;padding:20px 0 0}
-  .gallery img{width:180px;height:120px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:transform .2s ease;cursor:pointer}
-  .gallery img:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+   .crumb{font-size:.95rem;color:#64748b;margin-bottom:12px}
+   .crumb a{color:#0f2342;text-decoration:none;transition:color .2s ease}
+   .crumb a:hover{text-decoration:underline;color:#0f2342}
 
-  .meta-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
-  .sep{opacity:.4;color:#64748b}
+   .title{margin:8px 0 12px 0;font-size:2rem;font-weight:700;line-height:1.3;color:#0f2342}
+   .meta{color:#64748b;font-size:.95rem}
+   .pill{display:inline-block;background:#0f2342;color:#fff;border-radius:999px;padding:4px 12px;font-size:.8rem;font-weight:600;margin-right:6px}
 
-  @media (max-width:768px){
-    .title{font-size:1.5rem}
-    .wrap{padding:0 16px;margin:20px auto}
-    .content{padding:20px}
-    .gallery img{width:calc(50% - 6px)}
-  }
+   .card{background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(15,35,66,.06);overflow:hidden;border:1px solid #e8eef5}
+   .hero{width:100%;aspect-ratio:16/9;background:#eef3f9;display:flex;align-items:center;justify-content:center;overflow:hidden}
+   .hero img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease;cursor:pointer}
+   .hero:hover img{transform:scale(1.02)}
+
+   .content{padding:28px 32px;line-height:1.8;font-size:1.05rem;color:#374151}
+   .content strong{color:#0f2342;font-weight:600}
+   .gallery{display:flex;gap:12px;flex-wrap:wrap;padding:20px 0 0}
+   .gallery img{width:180px;height:120px;object-fit:cover;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:transform .2s ease;cursor:pointer}
+   .gallery img:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+
+   .meta-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+   .sep{opacity:.4;color:#64748b}
+
+   /* Lightbox Styles */
+   .lightbox {
+     display: none;
+     position: fixed;
+     z-index: 9999;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(0, 0, 0, 0.9);
+     overflow: auto;
+   }
+
+   .lightbox-content {
+     margin: 250px auto auto auto;
+     display: block;
+     width: 80%;
+     max-width: 900px;
+     max-height: 80vh;
+     object-fit: contain;
+     animation: zoom 0.3s ease;
+   }
+
+   @keyframes zoom {
+     from {transform: scale(0.1)}
+     to {transform: scale(1)}
+   }
+
+   .lightbox-close {
+     position: absolute;
+     top: 15px;
+     right: 35px;
+     color: #f1f1f1;
+     font-size: 40px;
+     font-weight: bold;
+     transition: 0.3s;
+     cursor: pointer;
+   }
+
+   .lightbox-close:hover,
+   .lightbox-close:focus {
+     color: #bbb;
+     text-decoration: none;
+   }
+
+   .lightbox-caption {
+     margin: auto;
+     display: block;
+     width: 80%;
+     max-width: 700px;
+     text-align: center;
+     color: #ccc;
+     padding: 10px 0;
+     height: 150px;
+   }
+
+   @media (max-width:768px){
+     .title{font-size:1.5rem}
+     .wrap{padding:0 16px;margin:20px auto}
+     .content{padding:20px}
+     .gallery img{width:calc(50% - 6px)}
+     .lightbox-content { width: 100%; }
+   }
   </style>
 </head>
 <body>
@@ -84,7 +172,7 @@
         @if($news->images && $news->images->count() > 1)
           <div class="gallery">
             @foreach($news->images as $im)
-              <img src="{{ asset('storage/'.$im->Img) }}" alt="image">
+              <img src="{{ asset('storage/'.$im->Img) }}" alt="รูปภาพข่าว" style="cursor: pointer;">
             @endforeach
           </div>
         @endif
@@ -92,5 +180,53 @@
     </div>
     @include('components.comments', ['model' => $news, 'type' => 'news'])
   </div>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const galleryImages = document.querySelectorAll('.gallery img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const lightboxClose = document.querySelector('.lightbox-close');
+    
+    galleryImages.forEach(function(img) {
+      img.addEventListener('click', function() {
+        lightbox.style.display = 'block';
+        lightboxImg.src = this.src;
+        lightboxCaption.innerHTML = this.alt;
+      });
+    });
+    
+    const heroImage = document.querySelector('.hero img');
+    if (heroImage) {
+      heroImage.addEventListener('click', function() {
+        lightbox.style.display = 'block';
+        lightboxImg.src = this.src;
+        lightboxCaption.innerHTML = this.alt;
+      });
+    }
+    
+    lightboxClose.addEventListener('click', function() {
+      lightbox.style.display = 'none';
+    });
+    
+    lightbox.addEventListener('click', function(e) {
+      if (e.target === lightbox) lightbox.style.display = 'none';
+    });
+    
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && lightbox.style.display === 'block') {
+        lightbox.style.display = 'none';
+      }
+    });
+  });
+  </script>
 </body>
 </html>

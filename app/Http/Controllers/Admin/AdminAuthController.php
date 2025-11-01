@@ -92,12 +92,12 @@ class AdminAuthController extends Controller
                 ->withErrors(['google' => 'Google OAuth: '.$e->getMessage()]);
         }
     }
-    //กันให้ถ้ายังไม่ล็อคอินของ BO ก็ให้เข้าที่หน้าของ BO กันไปเข้าของหน้าบ้าน
+/*     //กันให้ถ้ายังไม่ล็อคอินของ BO ก็ให้เข้าที่หน้าของ BO กันไปเข้าของหน้าบ้าน
     protected function redirectTo($request): ?string
     {
         if (!$request->expectsJson()) {
             return $request->is('admin/*') ? route('admin.login') : route('login');
         }
         return null;
-    }
+    } */
 }
