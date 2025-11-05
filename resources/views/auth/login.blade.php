@@ -291,6 +291,12 @@
           เข้าสู่ระบบ
         </button>
         <div class="muted">
+          <a href="{{ route('password.request') }}">
+            <i class="fas fa-key"></i>
+            ลืมรหัสผ่าน
+          </a>
+        </div>
+        <div class="muted">
           ยังไม่มีบัญชี?
           <a href="{{ route('signup') }}">
             <i class="fas fa-user-plus"></i>
