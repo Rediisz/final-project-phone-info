@@ -14,8 +14,8 @@ Admins can manage phone brands, models, and news through a dedicated back office
 
 ---
 
-## Youtube
-▶ [Guide](https://youtu.be/jLfYiMhJrlA)
+## ▶︎ Youtube
+▶ [Smartspec Guide](https://youtu.be/jLfYiMhJrlA)
 
 ---
 
